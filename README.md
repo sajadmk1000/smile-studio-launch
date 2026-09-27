@@ -1,29 +1,18 @@
-# Welcome to your Lovable project
+# Dr. Ameen's Smile Studio
 
-This project was built with [Lovable](https://lovable.dev).
+A multi-page dental studio website for South Koduvally, Kerala. Built with TanStack Start, React, TypeScript and Tailwind CSS v4. Start locally with `bun install` and `bun run dev`; the project uses the standard Lovable preview and publish workflow. No environment variables or private keys are required.
 
-## Build with Lovable
+## Editing
+Clinic facts and treatment copy: `src/lib/site-data.ts`. Source and image provenance: `content/content-registry.md`, `research/` and `assets/image-registry.md`. Palette and typography: `src/styles.css`. Replace conceptual images in `src/assets/` with permitted authentic clinic imagery and update alt text and captions. The temporary monogram is in `src/components/site/SiteShell.tsx` and `public/favicon.svg`.
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+## Enquiries and privacy
+The form builds a message and opens WhatsApp; nothing is stored on this website. The visitor must send the message there, and the clinic must confirm availability. To add real bookings, connect a properly secured persistent service, consent/privacy handling and reliable confirmation before changing the wording. The enquiry interface is in `src/routes/contact.tsx`.
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+## Search and analytics
+Unique route metadata and relative canonical links are included. Home has a Dentist JSON-LD entry using client-provided facts. A sitemap should be generated after a public domain exists. No analytics are installed; obtain consent and update the privacy page before adding a provider.
 
-## Development
+## Malayalam
+English is the only shipped language. For future Malayalam, extract copy from page modules into language dictionaries, arrange professional translation and use locale-aware routes and `lang` attributes; do not machine-publish unreviewed medical copy.
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+## Deployment
+Publish through Lovable after owner verification and live journey tests. See `LAUNCH-CHECKLIST.md` for blockers.
