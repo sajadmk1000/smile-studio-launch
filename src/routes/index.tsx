@@ -1,24 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { ArrowDown, ArrowUpRight } from 'lucide-react';
+import hero from '@/assets/hero-dental.jpg';
+import detail from '@/assets/studio-detail.jpg';
+import { BookingLinks, ContactBand, Eyebrow, FAQList, LocationBlock, SectionHeading, TreatmentList } from '@/components/site/Elements';
+import { treatments, commonFaqs } from '@/lib/site-data';
+export const Route = createFileRoute('/')({head:()=>({meta:[{title:"Dr. Ameen's Smile Studio | Dental Clinic in South Koduvally"},{name:'description',content:'Explore smile designing, aligners, veneers, implants and root canal treatment at Dr. Ameen’s Smile Studio in South Koduvally, Kerala.'},{property:'og:title',content:"Dr. Ameen's Smile Studio | South Koduvally"},{property:'og:description',content:'Explore dental care and get in touch with Dr. Ameen’s Smile Studio in South Koduvally, Kerala.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'},{property:'og:url',content:'/'}],links:[{rel:'canonical',href:'/'}],scripts:[{type:'application/ld+json',children:JSON.stringify({'@context':'https://schema.org','@type':'Dentist',name:"Dr. Ameen's Smile Studio",telephone:'+91 73063 08876',address:{'@type':'PostalAddress',streetAddress:'Near Erapund Juma Masjid, Madrassa Bazar, South Koduvally',addressLocality:'Koduvally',addressRegion:'Kerala',postalCode:'673572',addressCountry:'IN'},openingHoursSpecification:[{'@type':'OpeningHoursSpecification',dayOfWeek:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],opens:'10:00',closes:'19:00'}]})}]}),component:Home});
+function Home(){return <main><section className="home-hero"><img className="hero-image" src={hero} width="1600" height="1104" alt="Conceptual dental study model in natural light" fetchPriority="high"/><div className="hero-shade"/><div className="container-wide hero-content"><div className="hero-overline"><span className="rule"/>SOUTH KODUVALLY, KERALA</div><h1>Care, down to<br/><em>the details.</em></h1><p>Dental care begins with being heard. Discover considered treatment options at Dr. Ameen's Smile Studio.</p><BookingLinks/><div className="hero-bottom"><span>DR. AMEEN'S SMILE STUDIO</span><a href="#discover" aria-label="Discover treatments"><ArrowDown size={18}/></a><span>01 / A BETTER BEGINNING</span></div></div></section><section id="discover" className="intro-statement container-wide"><div className="intro-label"><span className="index-mark">01</span><Eyebrow>AN INTRODUCTION</Eyebrow></div><div><h2>Every smile is its<br/><em>own story.</em></h2><p>Whether you’re considering a change or looking for clarity about a dental concern, the first step is a conversation about what matters to you.</p><Link className="text-link" to="/about">Get to know us <ArrowUpRight size={18}/></Link></div></section><section className="treatments-section"><div className="container-wide"><SectionHeading index="02" label="WHAT WE DO" title="Care for every chapter of your smile." copy="Explore treatment areas and the questions worth asking before you decide."/><TreatmentList items={treatments}/><Link className="text-link treatment-footer-link" to="/treatments">Explore all treatments <ArrowUpRight size={18}/></Link></div></section><section className="feature-story"><div className="feature-photo"><img src={detail} width="1200" height="1408" loading="lazy" alt="Conceptual dental study cast on a dark green surface"/><span>CONCEPTUAL IMAGE · NOT A PATIENT CASE</span></div><div className="feature-content"><Eyebrow>03 / A CLOSER LOOK</Eyebrow><h2>Not just a smile.<br/><em>Your smile.</em></h2><p>Smile designing starts with understanding the person behind the smile. A consultation helps you explore possibilities, ask questions and make an informed choice.</p><Link className="text-link" to="/treatments/$slug" params={{slug:'smile-designing'}}>Explore smile designing <ArrowUpRight size={18}/></Link><span className="feature-asterisk" aria-hidden="true">✳</span></div></section><section className="principles container-wide"><SectionHeading index="04" label="THE EXPERIENCE" title="A little more room to ask."/><div className="principle-grid"><div><span>01</span><h3>Start with a conversation</h3><p>Share what you’re thinking about and what you’d like to understand.</p></div><div><span>02</span><h3>Explore your options</h3><p>A professional assessment can help clarify which approaches may be appropriate.</p></div><div><span>03</span><h3>Decide with confidence</h3><p>Ask about the process, practical considerations and next steps before moving forward.</p></div></div></section><LocationBlock/><section className="faq-section container-wide"><SectionHeading index="05" label="GOOD TO KNOW" title="Questions are welcome."/><FAQList items={commonFaqs.slice(0,3)}/><Link className="text-link faq-more" to="/faq">More frequently asked questions <ArrowUpRight size={18}/></Link></section><ContactBand/></main>}
