@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowDown, ArrowUpRight, MessageCircle } from "lucide-react";
+import { ArrowDown, ArrowUpRight, MessageCircle, Pause, Play } from "lucide-react";
 import { media, clinic, whatsapp } from "@/lib/site-data";
 
 export function CinematicHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -17,28 +18,73 @@ export function CinematicHero() {
 
     if (mediaQuery.matches) {
       video.pause();
+      setIsPlaying(false);
       return;
     }
 
-    const handleCanPlay = () => {
+    // Force strict mobile video attributes for iOS & Android
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute("playsinline", "true");
+    video.setAttribute("webkit-playsinline", "true");
+
+    const markReadyAndPlay = () => {
       setVideoLoaded(true);
-      video.play().catch(() => {
-        // Autoplay may be deferred until user interaction on strict browsers
-      });
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch(() => {
+            // Autoplay deferred by browser low-power mode
+            setIsPlaying(false);
+          });
+      }
     };
 
-    if (video.readyState >= 3) {
-      handleCanPlay();
-    } else {
-      video.addEventListener("canplaythrough", handleCanPlay);
-      video.addEventListener("canplay", handleCanPlay);
+    video.addEventListener("loadeddata", markReadyAndPlay);
+    video.addEventListener("canplay", markReadyAndPlay);
+    video.addEventListener("playing", markReadyAndPlay);
+
+    // Initial check if video is already ready in cache
+    if (video.readyState >= 2) {
+      markReadyAndPlay();
     }
 
+    // Touch-to-unlock for mobile browsers with strict autoplay policies
+    const handleFirstTouch = () => {
+      if (video && video.paused) {
+        video.play().then(() => {
+          setVideoLoaded(true);
+          setIsPlaying(true);
+        }).catch(() => {});
+      }
+      window.removeEventListener("touchstart", handleFirstTouch);
+    };
+    window.addEventListener("touchstart", handleFirstTouch, { passive: true, once: true });
+
     return () => {
-      video.removeEventListener("canplaythrough", handleCanPlay);
-      video.removeEventListener("canplay", handleCanPlay);
+      video.removeEventListener("loadeddata", markReadyAndPlay);
+      video.removeEventListener("canplay", markReadyAndPlay);
+      video.removeEventListener("playing", markReadyAndPlay);
+      window.removeEventListener("touchstart", handleFirstTouch);
     };
   }, []);
+
+  const togglePlayback = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.paused) {
+      video.play().then(() => {
+        setIsPlaying(true);
+      }).catch(() => {});
+    } else {
+      video.pause();
+      setIsPlaying(false);
+    }
+  };
 
   return (
     <section
@@ -55,7 +101,7 @@ export function CinematicHero() {
           fetchPriority="high"
         />
 
-        {/* Cinematic Walkthrough Video */}
+        {/* Cinematic Walkthrough Video with full mobile responsiveness */}
         {!prefersReducedMotion && (
           <video
             ref={videoRef}
@@ -64,7 +110,7 @@ export function CinematicHero() {
             playsInline
             loop
             autoPlay
-            preload="metadata"
+            preload="auto"
             poster={media.heroPoster}
             aria-hidden="true"
           >
@@ -75,6 +121,19 @@ export function CinematicHero() {
         {/* Ambient Architectural Vignette & Text Scrim */}
         <div className="hero-scrim" />
       </div>
+
+      {/* Interactive Tour Play/Pause Toggle */}
+      {!prefersReducedMotion && (
+        <button
+          type="button"
+          onClick={togglePlayback}
+          className="hero-video-toggle"
+          aria-label={isPlaying ? "Pause studio walkthrough video" : "Play studio walkthrough video"}
+        >
+          {isPlaying ? <Pause size={12} /> : <Play size={12} />}
+          <span>{isPlaying ? "Pause Tour" : "Play Tour"}</span>
+        </button>
+      )}
 
       {/* Hero Content with Spatial Typography */}
       <div className="container-wide hero-inner-container">
