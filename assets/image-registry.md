@@ -1,8 +1,10 @@
 # Image registry
 
-| File | Source | License | Purpose | Alt / crop |
-|---|---|---|---|---|
-| src/assets/hero-dental.jpg | Project-generated | Project asset | Homepage conceptual still life and visual journal | Dental study model in natural light, cover, 1600 × 1104 |
-| src/assets/studio-detail.jpg | Project-generated | Project asset | Editorial section, About, visual journal | Dental cast on botanical green surface, cover, 1200 × 1408 |
+| File | Source | Purpose |
+|---|---|---|
+| src/assets/clinic/hero.{mp4,webm} + poster.webp | Owner-supplied clinic video (muted, re-encoded) | Homepage full-screen opening |
+| src/assets/clinic/exterior, signage, reception, waiting, treatment-room | Owner-supplied clinic photos | Homepage experience, About, Gallery |
+| src/assets/clinic/certificates | Owner-supplied photo | Trust section; certificate text is NOT transcribed or claimed |
+| src/assets/hero-dental.jpg, studio-detail.jpg | Project-generated conceptual | Legacy, now unused on main pages |
 
-There are no external photographic assets, stock licenses or patient likenesses.
+Owner should confirm the supplied photos and certificates are accurate representations of the real clinic before launch.

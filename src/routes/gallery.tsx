@@ -1,5 +1,50 @@
 import { createFileRoute } from '@tanstack/react-router';
-import hero from '@/assets/hero-dental.jpg';import detail from '@/assets/studio-detail.jpg';
-import { ContactBand, Eyebrow, PageIntro } from '@/components/site/Elements';
-export const Route=createFileRoute('/gallery')({head:()=>({meta:[{title:'Visual Journal | Dr. Ameen’s Smile Studio'},{name:'description',content:'A visual journal exploring form, detail and dental care. Conceptual photography; not clinic or patient images.'},{property:'og:title',content:'Visual Journal | Dr. Ameen’s Smile Studio'},{property:'og:description',content:'An editorial look at the details of dental care.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}],links:[{rel:'canonical',href:'/gallery'}]}),component:Gallery});
-function Gallery(){return <main><PageIntro label="VISUAL JOURNAL" title="A study in details." copy="An editorial exploration of form and care. These conceptual images are not photographs of the studio, its team or its patients."/><section className="container-wide gallery-grid"><figure><img src={hero} width="1600" height="1104" loading="lazy" alt="Conceptual dental model in sunlight"/><figcaption>01 / FORM & LIGHT — CONCEPTUAL IMAGE</figcaption></figure><figure><img src={detail} width="1200" height="1408" loading="lazy" alt="Conceptual dental cast on green surface"/><figcaption>02 / A CLOSER LOOK — CONCEPTUAL IMAGE</figcaption></figure></section><section className="quiet-note container-wide"><Eyebrow>REAL IMAGES MATTER</Eyebrow><p>Clinic and patient photographs are not shown here because their origin and permissions have not been verified.</p></section><ContactBand/></main>}
+import exterior from '@/assets/clinic/exterior.webp.asset.json';
+import signage from '@/assets/clinic/signage.webp.asset.json';
+import reception from '@/assets/clinic/reception.webp.asset.json';
+import waiting from '@/assets/clinic/waiting.webp.asset.json';
+import room from '@/assets/clinic/treatment-room.webp.asset.json';
+import certs from '@/assets/clinic/certificates.webp.asset.json';
+import { ContactBand, PageIntro } from '@/components/site/Elements';
+import { Reveal } from '@/components/site/Cinematic';
+
+const items = [
+  { img: exterior, label: 'ARRIVAL', alt: "Exterior of Dr. Ameen's Smile Studio at dusk" },
+  { img: reception, label: 'RECEPTION', alt: 'Reception desk with warm lighting' },
+  { img: waiting, label: 'THE LOUNGE', alt: 'Waiting lounge facing the street trees' },
+  { img: room, label: 'TREATMENT ROOM', alt: 'Treatment room with dental chair' },
+  { img: certs, label: 'CERTIFICATES', alt: 'Framed certificates on the studio wall' },
+  { img: signage, label: 'THE GARDEN WALL', alt: 'Illuminated studio sign on a curved wall' },
+];
+
+export const Route = createFileRoute('/gallery')({
+  head: () => ({
+    meta: [
+      { title: 'Inside the Clinic | Dr. Ameen’s Smile Studio' },
+      { name: 'description', content: 'See the exterior, reception, lounge and treatment room of Dr. Ameen’s Smile Studio in South Koduvally.' },
+      { property: 'og:title', content: 'Inside Dr. Ameen’s Smile Studio' },
+      { property: 'og:description', content: 'A look around the South Koduvally dental studio.' },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+    ],
+    links: [{ rel: 'canonical', href: '/gallery' }],
+  }),
+  component: Gallery,
+});
+
+function Gallery() {
+  return (
+    <main>
+      <PageIntro label="INSIDE THE STUDIO" title="A walk through the clinic." copy="From the garden wall to the treatment room — the spaces you’ll see when you visit." />
+      <section className="container-wide clinic-gallery">
+        {items.map((it, i) => (
+          <Reveal key={it.label} className={`cg-item cg-${i}`}>
+            <img src={it.img.url} loading="lazy" alt={it.alt} />
+            <span>0{i + 1} · {it.label}</span>
+          </Reveal>
+        ))}
+      </section>
+      <ContactBand />
+    </main>
+  );
+}
