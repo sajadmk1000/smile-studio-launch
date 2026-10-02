@@ -9,6 +9,17 @@ export function CinematicHero() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mediaQuery.matches);
@@ -70,7 +81,7 @@ export function CinematicHero() {
       video.removeEventListener("playing", markReadyAndPlay);
       window.removeEventListener("touchstart", handleFirstTouch);
     };
-  }, []);
+  }, [isMobile]);
 
   const togglePlayback = () => {
     const video = videoRef.current;
@@ -86,6 +97,9 @@ export function CinematicHero() {
     }
   };
 
+  const activeVideoSrc = isMobile && media.heroVideoMobile ? media.heroVideoMobile : media.heroVideo;
+  const activePosterSrc = isMobile && media.heroPosterMobile ? media.heroPosterMobile : media.heroPoster;
+
   return (
     <section
       className={`hero-cinematic ${videoLoaded ? "video-ready" : ""}`}
@@ -94,27 +108,28 @@ export function CinematicHero() {
       <div className="hero-video-wrapper">
         {/* Instant high-resolution poster frame prevents any blank flash */}
         <img
-          src={media.heroPoster}
+          src={activePosterSrc}
           alt="Exterior and consultation suite of Dr. Ameen's Smile Studio"
           className="hero-poster"
           loading="eager"
           fetchPriority="high"
         />
 
-        {/* Cinematic Walkthrough Video with full mobile responsiveness */}
+        {/* Cinematic Walkthrough Video: switches to portrait video on mobile */}
         {!prefersReducedMotion && (
           <video
             ref={videoRef}
+            key={isMobile ? "mobile-portrait-video" : "desktop-landscape-video"}
             className="hero-video"
             muted
             playsInline
             loop
             autoPlay
             preload="auto"
-            poster={media.heroPoster}
+            poster={activePosterSrc}
             aria-hidden="true"
           >
-            <source src={media.heroVideo} type="video/mp4" />
+            <source src={activeVideoSrc} type="video/mp4" />
           </video>
         )}
 

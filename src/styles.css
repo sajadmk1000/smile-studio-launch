@@ -2147,7 +2147,7 @@ details[open] .faq-accordion-plus {
 
   .hero-poster,
   .hero-video {
-    object-position: center 38%;
+    object-position: center center;
   }
 
   .hero-scrim {
