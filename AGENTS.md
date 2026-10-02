@@ -11,4 +11,4 @@
 
 - Keep clinic-specific facts in `src/lib/site-data.ts` and trace them to `content/content-registry.md`; this avoids accidental medical or business claims.
 - Use one TanStack Start content route per public page and a client-side WhatsApp handoff for enquiries; no backend or confirmed booking exists.
-- Treat generated dental still lifes as conceptual imagery and label them; no authentic clinic or patient assets have been verified.
+- Owner-supplied clinic photos and video are the primary imagery; certificate content is never transcribed into claims.
