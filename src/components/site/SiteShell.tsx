@@ -1,13 +1,304 @@
-import { useState } from 'react';
-import { Link } from '@tanstack/react-router';
-import { ArrowUpRight, Menu, X, Phone, MessageCircle, CalendarDays } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { clinic, whatsapp, treatments } from '@/lib/site-data';
+import { useState, useEffect } from "react";
+import { Link } from "@tanstack/react-router";
+import {
+  ArrowUpRight,
+  Menu,
+  X,
+  Phone,
+  MessageCircle,
+  CalendarDays,
+  MapPin,
+  Clock,
+} from "lucide-react";
+import { ClinicLogo } from "./ClinicLogo";
+import { clinic, whatsapp, treatments } from "@/lib/site-data";
 
-const links = [{to:'/treatments',label:'Treatments'},{to:'/treatments/smile-designing',label:'Smile design'},{to:'/about',label:'About'},{to:'/gallery',label:'Gallery'},{to:'/reviews',label:'Reviews'},{to:'/faq',label:'FAQ'},{to:'/contact',label:'Contact'}];
 export function SiteHeader() {
- const [open,setOpen]=useState(false);
- return <><header className="site-header"><div className="container-wide header-inner"><Link to="/" className="brand" onClick={()=>setOpen(false)} aria-label="Dr. Ameen's Smile Studio home"><span className="brand-symbol" aria-hidden="true">a<span className="symbol-arc"/></span><span className="brand-name">DR. AMEEN'S <small>SMILE STUDIO</small></span></Link><nav className="desktop-nav" aria-label="Main navigation">{links.map(l=><Link key={l.to} to={l.to} className="nav-link" activeProps={{className:'nav-link active'}}>{l.label}</Link>)}</nav><div className="header-actions"><Button asChild className="header-book"><Link to="/contact" search={{interest:''}}>Book consultation <ArrowUpRight size={16}/></Link></Button><Button variant="ghost" size="icon" className="menu-button" aria-label={open?'Close menu':'Open menu'} aria-expanded={open} onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</Button></div></div></header>{open && <nav className="mobile-menu" aria-label="Mobile navigation">{links.map((l,i)=><Link key={l.to} to={l.to} onClick={()=>setOpen(false)}><small>0{i+1}</small>{l.label}<ArrowUpRight size={20}/></Link>)}</nav>}</>
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 40) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  const navLinks = [
+    { to: "/treatments", label: "Treatments" },
+    { to: "/treatments/smile-designing", label: "Smile Design" },
+    { to: "/about", label: "About" },
+    { to: "/gallery", label: "Inside the Studio" },
+    { to: "/contact", label: "Contact" },
+  ];
+
+  return (
+    <>
+      <header
+        className={`site-header ${isScrolled ? "is-scrolled" : "is-transparent"}`}
+      >
+        <div className="container-wide header-container">
+          <Link
+            to="/"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Dr. Ameen's Smile Studio Home"
+          >
+            <ClinicLogo
+              variant="horizontal"
+              theme={isScrolled ? "inherit" : "light"}
+            />
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="nav-links-desktop" aria-label="Main Navigation">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="nav-link-item"
+                activeProps={{ className: "nav-link-item active" }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Header Action Buttons */}
+          <div className="header-actions-group">
+            <Link
+              to="/contact"
+              className="header-cta-btn"
+            >
+              Book Consultation <ArrowUpRight size={15} />
+            </Link>
+
+            {/* Mobile Hamburger Toggle */}
+            <button
+              type="button"
+              className="header-mobile-toggle"
+              aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={mobileMenuOpen}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Navigation Drawer */}
+      <div
+        className={`mobile-nav-drawer ${mobileMenuOpen ? "is-open" : ""}`}
+        aria-hidden={!mobileMenuOpen}
+      >
+        <div className="mobile-nav-list">
+          <Link
+            to="/"
+            className="mobile-nav-item"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Home <span>00</span>
+          </Link>
+          <Link
+            to="/treatments"
+            className="mobile-nav-item"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Treatments <span>01</span>
+          </Link>
+          <Link
+            to="/treatments/smile-designing"
+            className="mobile-nav-item"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Smile Designing <span>02</span>
+          </Link>
+          <Link
+            to="/gallery"
+            className="mobile-nav-item"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Inside the Studio <span>03</span>
+          </Link>
+          <Link
+            to="/about"
+            className="mobile-nav-item"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            About Dr. Ameen <span>04</span>
+          </Link>
+          <Link
+            to="/faq"
+            className="mobile-nav-item"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Common Questions <span>05</span>
+          </Link>
+          <Link
+            to="/contact"
+            className="mobile-nav-item"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Contact & Directions <span>06</span>
+          </Link>
+        </div>
+
+        <div className="mobile-drawer-bottom">
+          <Link
+            to="/contact"
+            className="btn-primary"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Book a Consultation <ArrowUpRight size={17} />
+          </Link>
+          <a
+            href={whatsapp()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-secondary"
+          >
+            <MessageCircle size={18} /> <span>WhatsApp Studio</span>
+          </a>
+          <a href={`tel:${clinic.tel}`} className="btn-secondary">
+            <Phone size={18} /> <span>Call {clinic.displayPhone}</span>
+          </a>
+        </div>
+      </div>
+    </>
+  );
 }
-export function SiteFooter() { return <footer className="site-footer"><div className="container-wide footer-main"><div><Link to="/" className="footer-brand">Dr. Ameen's<br/><em>Smile Studio.</em></Link><p>Thoughtful dental care in South Koduvally.</p></div><div><h3>EXPLORE</h3><Link to="/treatments">Treatments</Link><Link to="/about">About</Link><Link to="/gallery">Gallery</Link><Link to="/reviews">Reviews</Link><Link to="/faq">Questions</Link></div><div><h3>TREATMENTS</h3>{treatments.map(t=><Link key={t.slug} to="/treatments/$slug" params={{slug:t.slug}}>{t.name}</Link>)}</div><div><h3>VISIT & CONNECT</h3><p>{clinic.address}</p><a href={`tel:${clinic.tel}`}>{clinic.phone}</a><a href={whatsapp()} target="_blank" rel="noopener noreferrer">WhatsApp <ArrowUpRight size={14}/></a><a href={clinic.maps} target="_blank" rel="noopener noreferrer">Get directions <ArrowUpRight size={14}/></a><p>{clinic.hours}</p></div></div><div className="container-wide footer-bottom"><span>© {new Date().getFullYear()} Dr. Ameen's Smile Studio</span><div><Link to="/privacy">Privacy</Link><Link to="/medical-disclaimer">Medical disclaimer</Link></div><span>South Koduvally, Kerala</span></div></footer> }
-export function MobileActions() {return <div className="mobile-actions"><a href={`tel:${clinic.tel}`}><Phone size={18}/>Call</a><a href={whatsapp()} target="_blank" rel="noopener noreferrer"><MessageCircle size={18}/>WhatsApp</a><Link to="/contact" search={{interest:''}}><CalendarDays size={18}/>Book</Link></div>}
+
+export function SiteFooter() {
+  return (
+    <footer className="site-footer">
+      <div className="container-wide footer-top-grid">
+        {/* Col 1: Brand & Positioning */}
+        <div className="footer-col brand-col">
+          <Link to="/" aria-label="Dr. Ameen's Smile Studio Home">
+            <ClinicLogo variant="horizontal" />
+          </Link>
+          <p style={{ marginTop: "1.25rem", color: "var(--fg-secondary)", maxWidth: "340px", fontSize: "0.95rem" }}>
+            A considered, patient-first dental clinic located in South Koduvally, Kerala. Focused on truthful guidance, facial harmony, and gentle precision.
+          </p>
+          <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <span style={{ fontSize: "0.85rem", color: "var(--fg-muted)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <MapPin size={15} color="var(--accent-champagne-dark)" /> {clinic.locality}, {clinic.district}, Kerala {clinic.pincode}
+            </span>
+            <span style={{ fontSize: "0.85rem", color: "var(--fg-muted)", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <Clock size={15} color="var(--accent-champagne-dark)" /> {clinic.hours}
+            </span>
+          </div>
+        </div>
+
+        {/* Col 2: Navigation Links */}
+        <div className="footer-col">
+          <h4>Explore</h4>
+          <ul className="footer-nav-list">
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/treatments">All Treatments</Link></li>
+            <li><Link to="/treatments/smile-designing">Smile Designing</Link></li>
+            <li><Link to="/gallery">Inside the Studio</Link></li>
+            <li><Link to="/about">About the Clinic</Link></li>
+            <li><Link to="/faq">Questions & Answers</Link></li>
+            <li><Link to="/contact">Contact & Location</Link></li>
+          </ul>
+        </div>
+
+        {/* Col 3: Treatments */}
+        <div className="footer-col">
+          <h4>Treatments</h4>
+          <ul className="footer-nav-list">
+            {treatments.map((t) => (
+              <li key={t.slug}>
+                <Link to="/treatments/$slug" params={{ slug: t.slug }}>
+                  {t.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Col 4: Visit & Direct Contacts */}
+        <div className="footer-col">
+          <h4>Direct Enquiries</h4>
+          <p style={{ fontSize: "0.92rem", color: "var(--fg-secondary)", marginBottom: "1rem" }}>
+            {clinic.address}
+          </p>
+          <ul className="footer-nav-list">
+            <li>
+              <a href={`tel:${clinic.tel}`} style={{ fontWeight: 600, color: "var(--fg-primary)", display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
+                <Phone size={15} /> {clinic.displayPhone}
+              </a>
+            </li>
+            <li>
+              <a href={whatsapp()} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
+                <MessageCircle size={15} /> Chat on WhatsApp <ArrowUpRight size={13} />
+              </a>
+            </li>
+            <li>
+              <a href={clinic.maps} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
+                <MapPin size={15} /> Open in Google Maps <ArrowUpRight size={13} />
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="container-wide footer-bottom-bar">
+        <span>© {new Date().getFullYear()} {clinic.name}. All rights reserved.</span>
+        <div className="footer-bottom-links">
+          <Link to="/privacy">Privacy Policy</Link>
+          <Link to="/medical-disclaimer">Medical Disclaimer</Link>
+        </div>
+        <span>South Koduvally, Kozhikode, Kerala</span>
+      </div>
+    </footer>
+  );
+}
+
+export function MobileActions() {
+  return (
+    <nav className="mobile-action-bar" aria-label="Quick Mobile Actions">
+      <a href={`tel:${clinic.tel}`} aria-label={`Call ${clinic.name}`}>
+        <Phone size={18} />
+        <span>Call</span>
+      </a>
+      <a
+        href={whatsapp()}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Enquire via WhatsApp"
+      >
+        <MessageCircle size={18} />
+        <span>WhatsApp</span>
+      </a>
+      <Link
+        to="/contact"
+        className="primary-action"
+        aria-label="Book a dental consultation"
+      >
+        <CalendarDays size={18} />
+        <span>Consultation</span>
+      </Link>
+    </nav>
+  );
+}

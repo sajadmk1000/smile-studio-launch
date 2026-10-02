@@ -1,1 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="4" fill="#203b31"/><circle cx="32" cy="32" r="25" fill="none" stroke="#f6f3e9" stroke-width="1.5"/><text x="32" y="42" fill="#f6f3e9" font-family="Georgia,serif" font-style="italic" font-size="43" text-anchor="middle">a</text><path d="M20 46Q32 54 45 45" stroke="#f6f3e9" fill="none" stroke-width="1.5"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="8" fill="#141716"/>
+  <!-- Outer Tooth Silhouette -->
+  <path
+    d="M32 10C24 6 13 5.5 8 12C3 18.5 4.5 28 6.5 38C8.5 48 12.5 56 18.5 58C22.5 59.5 24.5 52 26 44C27.5 36 29 33.5 32 33.5C35 33.5 36.5 36 38 44C39.5 52 41.5 59.5 45.5 58C51.5 56 55.5 48 57.5 38C59.5 28 61 18.5 56 12C51 5.5 40 6 32 10Z"
+    stroke="#C8A676"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+  <!-- Inner 'H' Monogram -->
+  <path
+    d="M21 21V41M43 21V41M21 31H43"
+    stroke="#C8A676"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
