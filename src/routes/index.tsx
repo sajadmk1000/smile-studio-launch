@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, Award, ShieldCheck, Check } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { CinematicHero, Reveal } from "@/components/site/Cinematic";
 import {
   BookingLinks,
@@ -11,7 +12,11 @@ import {
 } from "@/components/site/Elements";
 import { TreatmentNavigator } from "@/components/site/TreatmentNavigator";
 import { ClinicStorySequence } from "@/components/site/ClinicStorySequence";
-import { clinic, commonFaqs, media, certificates } from "@/lib/site-data";
+import { SmileComparisonSlider } from "@/components/site/SmileComparisonSlider";
+import { TechCarousel } from "@/components/site/TechCarousel";
+import { DoctorShowcase } from "@/components/site/DoctorShowcase";
+import { VIPBookingModal } from "@/components/site/VIPBookingModal";
+import { clinic, commonFaqs, media } from "@/lib/site-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -77,10 +82,12 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
+  const [vipModalOpen, setVipModalOpen] = useState(false);
+
   return (
     <main>
       {/* SECTION 01 — ARRIVAL (Full-Screen Video Environment) */}
-      <CinematicHero />
+      <CinematicHero onOpenBooking={() => setVipModalOpen(true)} />
 
       {/* SECTION 02 — IDENTITY */}
       <section id="discover" className="section-identity">
@@ -151,11 +158,14 @@ function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 05 — TREATMENTS (Interactive Navigator) */}
+      {/* SECTION 05 — SPATIAL DOCTOR PROFILE & RECOGNITION WALL */}
+      <DoctorShowcase />
+
+      {/* SECTION 06 — TREATMENTS (Interactive Navigator) */}
       <section className="section-treatments" id="treatments">
         <div className="container-wide">
           <SectionHeading
-            index="04"
+            index="05"
             label="AREAS OF CARE"
             title={
               <>
@@ -177,87 +187,11 @@ function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 06 — SMILE DESIGN SPOTLIGHT */}
-      <section className="section-smile-design">
-        <div className="container-wide smile-design-layout">
-          <div className="smile-design-image">
-            <picture>
-              <source media="(max-width: 768px)" srcSet={media.signageMobile} />
-              <img
-                src={media.signage}
-                alt="Illuminated Dr. Ameen's Smile Studio exterior sign"
-                loading="lazy"
-              />
-            </picture>
-          </div>
+      {/* SECTION 07 — ROYAL SILK SMILE TRANSFORMATION SLIDER */}
+      <SmileComparisonSlider />
 
-          <div className="smile-design-content">
-            <span className="eyebrow-tag light">05 / BESPOKE AESTHETICS</span>
-            <h2 className="display-section" style={{ color: "var(--fg-inverse)" }}>
-              Not just a smile. <br />
-              <span className="display-italic">Your smile.</span>
-            </h2>
-            <p>
-              Smile designing at Dr. Ameen&apos;s studio is never a copy-paste formula. By analyzing facial contours, lip curvature, and tooth display, we craft enhancements that look completely natural and respect biological tooth structure.
-            </p>
-            <div style={{ display: "flex", gap: "1.25rem", flexWrap: "wrap", alignItems: "center" }}>
-              <Link
-                to="/treatments/$slug"
-                params={{ slug: "smile-designing" }}
-                className="btn-primary"
-              >
-                Discover Smile Designing <ArrowUpRight size={16} />
-              </Link>
-              <Link
-                to="/contact"
-                search={{ interest: "Smile Designing" }}
-                className="text-action-link"
-                style={{ color: "var(--fg-inverse)" }}
-              >
-                Schedule an aesthetic consultation
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 07 — TRUST / CREDENTIALS */}
-      <section className="section-trust">
-        <div className="container-wide trust-layout">
-          <div>
-            <span className="index-num">06</span>
-            <Eyebrow>VERIFIED CREDENTIALS</Eyebrow>
-            <h2 className="display-section" style={{ margin: "1rem 0" }}>
-              Training you <br />
-              <span className="display-italic">can see.</span>
-            </h2>
-            <p className="lead-copy" style={{ marginBottom: "1.5rem" }}>
-              We believe trust in healthcare must be backed by verifiable qualification. Dr. Ameen&apos;s certifications and ongoing memberships are permanently framed on our studio wall.
-            </p>
-
-            <div className="credentials-list">
-              {certificates.map((cert) => (
-                <div key={cert.title} className="credential-item">
-                  <h4>{cert.title}</h4>
-                  <span>{cert.issuer}</span>
-                  <p>{cert.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <Reveal className="trust-photo-card">
-            <picture>
-              <source media="(max-width: 768px)" srcSet={media.certificatesMobile} />
-              <img
-                src={media.certificates}
-                alt="Authentic professional dental certificates displayed on Dr. Ameen's clinic wall"
-                loading="lazy"
-              />
-            </picture>
-          </Reveal>
-        </div>
-      </section>
+      {/* SECTION 08 — 3D CLINICAL SCIENCE & PRECISION CAROUSEL */}
+      <TechCarousel />
 
       {/* SECTION 08 — GALLERY (Editorial Photographic Journey) */}
       <section className="section-gallery">
@@ -351,6 +285,9 @@ function HomePage() {
 
       {/* SECTION 11 — FINAL CONVERSION CTA */}
       <ContactBand />
+
+      {/* VIP CONCIERGE BOOKING MODAL */}
+      <VIPBookingModal isOpen={vipModalOpen} onClose={() => setVipModalOpen(false)} />
     </main>
   );
 }

@@ -9,6 +9,8 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { SiteHeader, SiteFooter, MobileActions } from "@/components/site/SiteShell";
+import { SmoothScrollProvider } from "@/components/motion/SmoothScroll";
+import { LuxuryAuraCursor } from "@/components/motion/Magnetic";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -119,11 +121,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <SiteHeader />
-      <Outlet />
-      <SiteFooter />
-      <MobileActions />
+      <SmoothScrollProvider>
+        <LuxuryAuraCursor />
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <SiteHeader />
+        <Outlet />
+        <SiteFooter />
+        <MobileActions />
+      </SmoothScrollProvider>
     </QueryClientProvider>
   );
 }

@@ -1,9 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowDown, ArrowUpRight, MessageCircle, Pause, Play } from "lucide-react";
+import { ArrowDown, ArrowUpRight, MessageCircle, Pause, Play, Sparkles } from "lucide-react";
 import { media, clinic, whatsapp } from "@/lib/site-data";
+import { Magnetic } from "@/components/motion/Magnetic";
 
-export function CinematicHero() {
+interface CinematicHeroProps {
+  onOpenBooking?: () => void;
+}
+
+export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -154,11 +159,11 @@ export function CinematicHero() {
       <div className="container-wide hero-inner-container">
         <div className="hero-badge-row">
           <span className="eyebrow-tag light">
-            SOUTH KODUVALLY · KOZHIKODE, KERALA
+            <Sparkles size={12} className="text-accent-champagne" /> SOUTH KODUVALLY · KOZHIKODE, KERALA
           </span>
         </div>
 
-        <div className="hero-title-group">
+        <div className="hero-title-group hero-title-drift">
           <h1 className="display-hero">
             Care, down to <br />
             <span className="display-italic">the details.</span>
@@ -170,22 +175,40 @@ export function CinematicHero() {
         </p>
 
         <div className="hero-actions-row">
-          <Link
-            to="/contact"
-            className="btn-primary"
-          >
-            Book a Consultation <ArrowUpRight size={17} />
-          </Link>
+          <Magnetic strength={0.3}>
+            {onOpenBooking ? (
+              <button
+                type="button"
+                onClick={onOpenBooking}
+                className="btn-royal-orbit"
+                id="hero-book-consultation"
+              >
+                <span>Book a Consultation</span>
+                <ArrowUpRight size={17} />
+              </button>
+            ) : (
+              <Link
+                to="/contact"
+                className="btn-royal-orbit"
+                id="hero-book-consultation"
+              >
+                <span>Book a Consultation</span>
+                <ArrowUpRight size={17} />
+              </Link>
+            )}
+          </Magnetic>
 
-          <a
-            href={whatsapp()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary"
-          >
-            <MessageCircle size={18} />
-            <span>Chat on WhatsApp</span>
-          </a>
+          <Magnetic strength={0.2}>
+            <a
+              href={whatsapp()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
+            >
+              <MessageCircle size={18} />
+              <span>Chat on WhatsApp</span>
+            </a>
+          </Magnetic>
         </div>
       </div>
 
