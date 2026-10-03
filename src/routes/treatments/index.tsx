@@ -4,7 +4,7 @@ import { ArrowUpRight, CheckCircle2, ShieldCheck, Microscope, HeartHandshake } f
 import { ContactBand, Eyebrow, PageIntro } from "@/components/site/Elements";
 import { treatments, clinic, whatsapp } from "@/lib/site-data";
 
-export const Route = createFileRoute("/treatments")({
+export const Route = createFileRoute("/treatments/")({
   head: () => ({
     meta: [
       {

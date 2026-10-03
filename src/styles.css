@@ -270,7 +270,8 @@ img, video {
   transition: background-color var(--transition-base),
               backdrop-filter var(--transition-base),
               border-color var(--transition-base),
-              box-shadow var(--transition-base);
+              box-shadow var(--transition-base),
+              color var(--transition-fast);
 }
 
 .site-header.is-transparent {
@@ -279,13 +280,30 @@ img, video {
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
+.site-header.is-light-surface {
+  background-color: rgba(250, 248, 245, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--fg-primary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.site-header.is-light-surface.is-scrolled,
 .site-header.is-scrolled {
-  background-color: rgba(250, 248, 245, 0.92);
+  background-color: rgba(250, 248, 245, 0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   color: var(--fg-primary);
   border-bottom: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-sm);
+}
+
+.site-header.is-mobile-open {
+  background-color: var(--bg-dark);
+  color: var(--fg-inverse);
+  border-bottom: 1px solid var(--border-inverse);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .header-container {
@@ -299,7 +317,7 @@ img, video {
 .nav-links-desktop {
   display: flex;
   align-items: center;
-  gap: clamp(1rem, 2vw, 2.25rem);
+  gap: clamp(0.75rem, 1.8vw, 2rem);
 }
 
 .nav-link-item {
@@ -311,12 +329,17 @@ img, video {
   transition: opacity var(--transition-fast), color var(--transition-fast);
 }
 
-.nav-link-item:hover,
-.nav-link-item.active {
-  color: var(--accent-champagne);
+/* Nav links on transparent header (dark video/hero background) */
+.site-header.is-transparent .nav-link-item {
+  color: rgba(250, 248, 245, 0.88);
 }
 
-.nav-link-item::after {
+.site-header.is-transparent .nav-link-item:hover,
+.site-header.is-transparent .nav-link-item.active {
+  color: var(--accent-champagne-light);
+}
+
+.site-header.is-transparent .nav-link-item::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -324,6 +347,31 @@ img, video {
   width: 0;
   height: 1.5px;
   background-color: var(--accent-champagne);
+  transition: width var(--transition-base);
+}
+
+/* Nav links on light surface header (ivory background) */
+.site-header.is-light-surface .nav-link-item {
+  color: var(--fg-secondary);
+}
+
+.site-header.is-light-surface .nav-link-item:hover {
+  color: var(--accent-champagne-dark);
+}
+
+.site-header.is-light-surface .nav-link-item.active {
+  color: var(--fg-primary);
+  font-weight: 600;
+}
+
+.site-header.is-light-surface .nav-link-item::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--accent-champagne-dark);
   transition: width var(--transition-base);
 }
 
@@ -366,6 +414,19 @@ img, video {
   justify-content: center;
   border-radius: 4px;
   color: inherit;
+  transition: color var(--transition-fast);
+}
+
+.site-header.is-transparent .header-mobile-toggle {
+  color: var(--fg-inverse);
+}
+
+.site-header.is-light-surface .header-mobile-toggle {
+  color: var(--fg-primary);
+}
+
+.site-header.is-mobile-open .header-mobile-toggle {
+  color: var(--fg-inverse);
 }
 
 /* Mobile Navigation Overlay Drawer */

@@ -17,8 +17,8 @@ import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as MedicalDisclaimerRouteImport } from './routes/medical-disclaimer'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ReviewsRouteImport } from './routes/reviews'
-import { Route as TreatmentsRouteImport } from './routes/treatments'
-import { Route as TreatmentsSlugRouteImport } from './routes/treatments.$slug'
+import { Route as TreatmentsIndexRouteImport } from './routes/treatments/index'
+import { Route as TreatmentsSlugRouteImport } from './routes/treatments/$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -60,15 +60,15 @@ const ReviewsRoute = ReviewsRouteImport.update({
   path: '/reviews',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TreatmentsRoute = TreatmentsRouteImport.update({
-  id: '/treatments',
-  path: '/treatments',
+const TreatmentsIndexRoute = TreatmentsIndexRouteImport.update({
+  id: '/treatments/',
+  path: '/treatments/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TreatmentsSlugRoute = TreatmentsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => TreatmentsRoute,
+  id: '/treatments/$slug',
+  path: '/treatments/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -80,8 +80,8 @@ export interface FileRoutesByFullPath {
   '/medical-disclaimer': typeof MedicalDisclaimerRoute
   '/privacy': typeof PrivacyRoute
   '/reviews': typeof ReviewsRoute
-  '/treatments': typeof TreatmentsRouteWithChildren
   '/treatments/$slug': typeof TreatmentsSlugRoute
+  '/treatments/': typeof TreatmentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -92,8 +92,8 @@ export interface FileRoutesByTo {
   '/medical-disclaimer': typeof MedicalDisclaimerRoute
   '/privacy': typeof PrivacyRoute
   '/reviews': typeof ReviewsRoute
-  '/treatments': typeof TreatmentsRouteWithChildren
   '/treatments/$slug': typeof TreatmentsSlugRoute
+  '/treatments': typeof TreatmentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -105,8 +105,8 @@ export interface FileRoutesById {
   '/medical-disclaimer': typeof MedicalDisclaimerRoute
   '/privacy': typeof PrivacyRoute
   '/reviews': typeof ReviewsRoute
-  '/treatments': typeof TreatmentsRouteWithChildren
   '/treatments/$slug': typeof TreatmentsSlugRoute
+  '/treatments/': typeof TreatmentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,8 +119,8 @@ export interface FileRouteTypes {
     | '/medical-disclaimer'
     | '/privacy'
     | '/reviews'
-    | '/treatments'
     | '/treatments/$slug'
+    | '/treatments/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -131,8 +131,8 @@ export interface FileRouteTypes {
     | '/medical-disclaimer'
     | '/privacy'
     | '/reviews'
-    | '/treatments'
     | '/treatments/$slug'
+    | '/treatments'
   id:
     | '__root__'
     | '/'
@@ -143,8 +143,8 @@ export interface FileRouteTypes {
     | '/medical-disclaimer'
     | '/privacy'
     | '/reviews'
-    | '/treatments'
     | '/treatments/$slug'
+    | '/treatments/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -156,7 +156,8 @@ export interface RootRouteChildren {
   MedicalDisclaimerRoute: typeof MedicalDisclaimerRoute
   PrivacyRoute: typeof PrivacyRoute
   ReviewsRoute: typeof ReviewsRoute
-  TreatmentsRoute: typeof TreatmentsRouteWithChildren
+  TreatmentsSlugRoute: typeof TreatmentsSlugRoute
+  TreatmentsIndexRoute: typeof TreatmentsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -217,34 +218,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/treatments': {
-      id: '/treatments'
+    '/treatments/': {
+      id: '/treatments/'
       path: '/treatments'
-      fullPath: '/treatments'
-      preLoaderRoute: typeof TreatmentsRouteImport
+      fullPath: '/treatments/'
+      preLoaderRoute: typeof TreatmentsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/treatments/$slug': {
       id: '/treatments/$slug'
-      path: '/$slug'
+      path: '/treatments/$slug'
       fullPath: '/treatments/$slug'
       preLoaderRoute: typeof TreatmentsSlugRouteImport
-      parentRoute: typeof TreatmentsRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface TreatmentsRouteChildren {
-  TreatmentsSlugRoute: typeof TreatmentsSlugRoute
-}
-
-const TreatmentsRouteChildren: TreatmentsRouteChildren = {
-  TreatmentsSlugRoute: TreatmentsSlugRoute,
-}
-
-const TreatmentsRouteWithChildren = TreatmentsRoute._addFileChildren(
-  TreatmentsRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -255,7 +244,8 @@ const rootRouteChildren: RootRouteChildren = {
   MedicalDisclaimerRoute: MedicalDisclaimerRoute,
   PrivacyRoute: PrivacyRoute,
   ReviewsRoute: ReviewsRoute,
-  TreatmentsRoute: TreatmentsRouteWithChildren,
+  TreatmentsSlugRoute: TreatmentsSlugRoute,
+  TreatmentsIndexRoute: TreatmentsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

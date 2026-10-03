@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import {
   ArrowUpRight,
   Menu,
@@ -16,20 +16,32 @@ import { clinic, whatsapp, treatments } from "@/lib/site-data";
 export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  // Only the homepage has the full-screen cinematic video hero at window.scrollY === 0.
+  // All internal pages (Treatments, Smile Design, About, FAQ, Gallery, Contact, etc.)
+  // feature a permanent, high-contrast, frosted ivory navigation header with dark charcoal typography and logo.
+  const hasDarkHero = pathname === "/";
+
+  // Determine if the header surface should be light (ivory with charcoal text):
+  // True on all internal pages, or on the homepage once scrolled past hero.
+  const isLightSurface = !hasDarkHero || isScrolled;
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 40) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 40);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname]);
+
+  // When route changes, close mobile menu
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -44,18 +56,35 @@ export function SiteHeader() {
   }, [mobileMenuOpen]);
 
   const navLinks = [
-    { to: "/treatments", label: "Treatments" },
+    { to: "/treatments", label: "Treatments", exact: true },
     { to: "/treatments/smile-designing", label: "Smile Design" },
     { to: "/about", label: "About" },
-    { to: "/gallery", label: "Inside the Studio" },
+    { to: "/gallery", label: "Studio" },
+    { to: "/faq", label: "FAQ" },
     { to: "/contact", label: "Contact" },
   ];
 
+  let headerClass = "site-header";
+  if (mobileMenuOpen) {
+    headerClass += " is-mobile-open";
+  } else if (isLightSurface) {
+    headerClass += " is-light-surface";
+    if (isScrolled) {
+      headerClass += " is-scrolled";
+    }
+  } else {
+    headerClass += " is-transparent";
+  }
+
+  const logoTheme = mobileMenuOpen
+    ? "light"
+    : isLightSurface
+    ? "inherit"
+    : "light";
+
   return (
     <>
-      <header
-        className={`site-header ${isScrolled ? "is-scrolled" : "is-transparent"}`}
-      >
+      <header className={headerClass}>
         <div className="container-wide header-container">
           <Link
             to="/"
@@ -64,7 +93,7 @@ export function SiteHeader() {
           >
             <ClinicLogo
               variant="horizontal"
-              theme={isScrolled ? "inherit" : "light"}
+              theme={logoTheme}
             />
           </Link>
 
@@ -76,6 +105,7 @@ export function SiteHeader() {
                 to={link.to}
                 className="nav-link-item"
                 activeProps={{ className: "nav-link-item active" }}
+                activeOptions={link.exact ? { exact: true } : undefined}
               >
                 {link.label}
               </Link>

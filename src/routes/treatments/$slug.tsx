@@ -351,7 +351,7 @@ function TreatmentDetailPage() {
           </div>
 
           <div style={{ maxWidth: "900px" }}>
-            <FAQList faqs={t.faqs} />
+            <FAQList items={t.faqs} />
           </div>
         </div>
       </section>

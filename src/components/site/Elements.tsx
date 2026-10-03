@@ -180,10 +180,17 @@ export function LocationBlock() {
   );
 }
 
-export function FAQList({ items }: { items: { q: string; a: string }[] }) {
+export function FAQList({
+  items,
+  faqs,
+}: {
+  items?: { q: string; a: string }[];
+  faqs?: { q: string; a: string }[];
+}) {
+  const list = items || faqs || [];
   return (
     <div className="faq-accordion">
-      {items.map((item, index) => (
+      {list.map((item, index) => (
         <details key={item.q} className="faq-accordion-item">
           <summary className="faq-accordion-summary">
             <span className="index-num">0{index + 1}</span>
