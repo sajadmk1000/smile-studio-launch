@@ -567,6 +567,7 @@ p, li, span, a, label {
 /* Ambient mobile companions hidden on desktop/landscape to preserve exact implementation */
 .hero-poster-backdrop,
 .hero-video-backdrop,
+.hero-ambient-canvas,
 .hero-ambient-vignette {
   display: none;
 }
@@ -903,18 +904,19 @@ p, li, span, a, label {
    MOBILE PORTRAIT (≤768px OR VERTICAL ASPECT RATIO): AMBIENT BLURRED BACKDROP
    ========================================================================== */
 @media (max-width: 768px), (orientation: portrait) and (max-width: 1024px) {
-  /* 1. Ambient Blurred Backdrop Video & Poster */
+  /* 1. Luminous Ambient Backdrop (Canvas + Video Mirror + Poster) */
   .hero-poster-backdrop,
-  .hero-video-backdrop {
+  .hero-video-backdrop,
+  .hero-ambient-canvas {
     display: block;
     position: absolute;
-    inset: -20px;
-    width: calc(100% + 40px);
-    height: calc(100% + 40px);
+    inset: -25%;
+    width: 150%;
+    height: 150%;
     object-fit: cover;
-    object-position: center 44%;
-    filter: blur(30px) brightness(0.6);
-    transform: scale(1.15);
+    object-position: center 38%;
+    filter: blur(45px) saturate(2) brightness(0.88);
+    transform: scale(1.25);
     pointer-events: none;
     z-index: 1;
     transition: opacity 1.2s ease;
@@ -924,19 +926,21 @@ p, li, span, a, label {
     opacity: 1;
   }
 
-  .hero-video-backdrop {
+  .hero-video-backdrop,
+  .hero-ambient-canvas {
     opacity: 0;
   }
 
+  .hero-cinematic.video-ready .hero-ambient-canvas,
   .hero-cinematic.video-ready .hero-video-backdrop {
-    opacity: 1;
+    opacity: 0.95;
   }
 
   .hero-cinematic.video-ready .hero-poster-backdrop {
     opacity: 0;
   }
 
-  /* 2. Zero visual crop: Main 16:9 uncropped foreground video */
+  /* 2. ZERO SQUARE EDGES: Soft feathered mask dissolves the rectangular borders into the ambient glow */
   .hero-poster,
   .hero-video {
     position: absolute;
@@ -944,11 +948,19 @@ p, li, span, a, label {
     width: 100%;
     height: 100%;
     object-fit: contain; /* Zero visual crop! */
-    object-position: center 42%;
+    object-position: center 36%;
     z-index: 2;
+    -webkit-mask-image:
+      radial-gradient(ellipse 95% 85% at 50% 36%, #000000 58%, rgba(0, 0, 0, 0.85) 75%, rgba(0, 0, 0, 0.35) 88%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, #000000 10%, #000000 78%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+    mask-image:
+      radial-gradient(ellipse 95% 85% at 50% 36%, #000000 58%, rgba(0, 0, 0, 0.85) 75%, rgba(0, 0, 0, 0.35) 88%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, #000000 10%, #000000 78%, transparent 100%);
   }
 
-  /* 3. Ambient Vignette Overlay blending top and bottom cleanly into page layout */
+  /* 3. Ambient Vignette Overlay: Blends seamlessly into header and bottom */
   .hero-ambient-vignette {
     display: block;
     position: absolute;
@@ -957,58 +969,56 @@ p, li, span, a, label {
     pointer-events: none;
     background:
       linear-gradient(180deg,
-        rgba(18, 21, 20, 0.95) 0%,
-        rgba(18, 21, 20, 0.60) 14%,
-        transparent 28%,
-        transparent 58%,
-        rgba(18, 21, 20, 0.85) 80%,
+        rgba(18, 21, 20, 0.85) 0%,
+        rgba(18, 21, 20, 0.25) 15%,
+        transparent 30%,
+        transparent 55%,
+        rgba(18, 21, 20, 0.70) 78%,
         rgba(18, 21, 20, 0.98) 100%
-      ),
-      radial-gradient(ellipse at 50% 42%, transparent 35%, rgba(18, 21, 20, 0.45) 100%);
+      );
+  }
+
+  .hero-scrim {
+    background: transparent;
+    pointer-events: none;
   }
 
   /* 4. Hero UI alignment: Clean, legible typography over ambient blurred areas */
   .hero-inner-container {
-    padding-bottom: clamp(1.75rem, 5vh, 2.75rem);
+    padding-bottom: clamp(1.25rem, 4vh, 2rem);
     padding-inline: 1.25rem;
     justify-content: flex-end;
+    z-index: 5;
   }
 
   .hero-badge-row {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.45rem;
   }
 
   .hero-micro-divider {
-    margin-bottom: 0.75rem;
+    display: none; /* keep mobile clean and uncluttered */
   }
 
   .hero-title-group {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
 
   .hero-title-group h1 {
-    font-size: clamp(2.15rem, 8.5vw, 2.75rem);
+    font-size: clamp(1.95rem, 7.8vw, 2.45rem);
     line-height: 1.15;
   }
 
   .hero-lead-text {
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     line-height: 1.5;
-    margin-bottom: 1.25rem;
-    max-width: 100%;
-    color: rgba(250, 248, 245, 0.95);
+    margin-bottom: 0;
+    max-width: 95%;
+    color: rgba(250, 248, 245, 0.94);
   }
 
+  /* Hide bulky duplicate CTA buttons on mobile since the mobile dock has Consultation/WhatsApp */
   .hero-actions-row {
-    gap: 0.75rem;
-    width: 100%;
-  }
-
-  .hero-actions-row .btn-royal-orbit,
-  .hero-actions-row .btn-secondary {
-    width: 100%;
-    justify-content: center;
-    height: 48px;
+    display: none !important;
   }
 
   .hero-scroll-cue {
@@ -1036,6 +1046,7 @@ p, li, span, a, label {
     transform: translate3d(0, 115%, -35px) rotateX(-25deg) scale(0.94);
   }
 }
+
 
 
 @media (prefers-reduced-motion: reduce) {

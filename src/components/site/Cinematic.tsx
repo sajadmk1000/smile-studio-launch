@@ -11,6 +11,7 @@ interface CinematicHeroProps {
 export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const backdropVideoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -36,7 +37,9 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
 
     const video = videoRef.current;
     const backdropVideo = backdropVideoRef.current;
+    const canvas = canvasRef.current;
     let revealTimer: ReturnType<typeof setTimeout> | null = null;
+    let animId: number;
 
     const triggerReveal = () => {
       setHeroRevealed(true);
@@ -109,6 +112,17 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
       }
     };
 
+    // Real-time ambient canvas glow loop (draws uncompressed video frame to blurred canvas)
+    const renderAmbientGlow = () => {
+      if (canvas && video && !video.paused && !video.ended && video.readyState >= 2) {
+        const ctx = canvas.getContext("2d", { willReadFrequently: false });
+        if (ctx) {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        }
+      }
+      animId = requestAnimationFrame(renderAmbientGlow);
+    };
+
     // Continuous video synchronization
     const syncPlayback = () => {
       if (backdropVideo && !backdropVideo.paused && Math.abs(video.currentTime - backdropVideo.currentTime) > 0.15) {
@@ -121,12 +135,14 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
       if (backdropVideo && backdropVideo.paused) {
         backdropVideo.play().catch(() => {});
       }
+      animId = requestAnimationFrame(renderAmbientGlow);
     };
 
     const handlePauseSync = () => {
       if (backdropVideo && !backdropVideo.paused) {
         backdropVideo.pause();
       }
+      if (animId) cancelAnimationFrame(animId);
     };
 
     video.addEventListener("loadeddata", markReadyAndPlay);
@@ -139,6 +155,7 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
     // Initial check if video is already ready in cache
     if (video.readyState >= 2) {
       markReadyAndPlay();
+      animId = requestAnimationFrame(renderAmbientGlow);
     }
 
     // Touch-to-unlock for mobile browsers with strict autoplay policies
@@ -149,6 +166,7 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
           .then(() => {
             setVideoLoaded(true);
             scheduleSpatialReveal();
+            animId = requestAnimationFrame(renderAmbientGlow);
           })
           .catch(() => {});
       }
@@ -162,6 +180,7 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
     return () => {
       if (revealTimer) clearTimeout(revealTimer);
       clearTimeout(fallbackTimer);
+      if (animId) cancelAnimationFrame(animId);
       video.removeEventListener("loadeddata", markReadyAndPlay);
       video.removeEventListener("canplay", markReadyAndPlay);
       video.removeEventListener("playing", handlePlaySync);
@@ -190,6 +209,15 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
           src={activePosterSrc}
           alt=""
           className="hero-poster-backdrop"
+          aria-hidden="true"
+        />
+
+        {/* Ambient Canvas (Generates zero-lag, ultra-vibrant real-time ambient lighting) */}
+        <canvas
+          ref={canvasRef}
+          width={96}
+          height={54}
+          className="hero-ambient-canvas"
           aria-hidden="true"
         />
 
