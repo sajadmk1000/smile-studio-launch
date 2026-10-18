@@ -86,7 +86,11 @@ const clinicSpaces = [
   },
 ];
 
-export function ClinicStorySequence() {
+interface ClinicStorySequenceProps {
+  indexNum?: string;
+}
+
+export function ClinicStorySequence({ indexNum = "06" }: ClinicStorySequenceProps = {}) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: "center",
@@ -223,7 +227,7 @@ export function ClinicStorySequence() {
         <div className="apple-walkthrough-header">
           <div className="apple-header-left">
             <div className="apple-section-eyebrow">
-              <span className="apple-numeral-pill">02</span>
+              <span className="apple-numeral-pill">{indexNum}</span>
               <Eyebrow>PHYSICAL ENVIRONMENT · ARCHITECTURE</Eyebrow>
             </div>
             <h2 className="display-section apple-walkthrough-title">

@@ -112,14 +112,11 @@ function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 03 — THE CLINIC (Physical Architectural Progression) */}
-      <ClinicStorySequence />
-
-      {/* SECTION 04 — THE PHILOSOPHY */}
+      {/* SECTION 03 — THE PHILOSOPHY */}
       <section className="section-philosophy">
         <div className="container-wide">
           <SectionHeading
-            index="03"
+            index="02"
             label="THE CLINICAL ETHOS"
             title={
               <>
@@ -158,14 +155,14 @@ function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 05 — SPATIAL DOCTOR PROFILE & RECOGNITION WALL */}
+      {/* SECTION 04 — SPATIAL DOCTOR PROFILE & RECOGNITION WALL */}
       <DoctorShowcase />
 
-      {/* SECTION 06 — TREATMENTS (Interactive Navigator) */}
+      {/* SECTION 05 — TREATMENTS (Interactive Navigator) */}
       <section className="section-treatments" id="treatments">
         <div className="container-wide">
           <SectionHeading
-            index="05"
+            index="03"
             label="AREAS OF CARE"
             title={
               <>
@@ -187,57 +184,14 @@ function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 07 — ROYAL SILK SMILE TRANSFORMATION SLIDER */}
+      {/* SECTION 06 — ROYAL SILK SMILE TRANSFORMATION SLIDER */}
       <SmileComparisonSlider />
 
-      {/* SECTION 08 — 3D CLINICAL SCIENCE & PRECISION CAROUSEL */}
+      {/* SECTION 07 — 3D CLINICAL SCIENCE & PRECISION CAROUSEL */}
       <TechCarousel />
 
-      {/* SECTION 08 — GALLERY (Editorial Photographic Journey) */}
-      <section className="section-gallery">
-        <div className="container-wide">
-          <SectionHeading
-            index="07"
-            label="THE PHYSICAL STUDIO"
-            title={
-              <>
-                A photographic journey <br />
-                <span className="display-italic">through the studio.</span>
-              </>
-            }
-            copy="Authentic photographs of the spaces you will see when you visit us in South Koduvally."
-          />
-
-          <div className="gallery-editorial-grid">
-            <Reveal className="gallery-grid-item span-7">
-              <img src={media.exterior} alt="Dr. Ameen's Smile Studio exterior at dusk" loading="lazy" />
-              <span className="gallery-item-caption">01 · Arrival at Dusk</span>
-            </Reveal>
-
-            <Reveal className="gallery-grid-item span-5">
-              <img src={media.reception} alt="Warm welcoming reception desk" loading="lazy" />
-              <span className="gallery-item-caption">02 · Consultation Reception</span>
-            </Reveal>
-
-            <Reveal className="gallery-grid-item span-4">
-              <img src={media.signage} alt="Illuminated signage on curved wall" loading="lazy" />
-              <span className="gallery-item-caption">03 · Garden Wall</span>
-            </Reveal>
-
-            <Reveal className="gallery-grid-item span-8">
-              <img src={media.treatmentRoom} alt="Operatory treatment suite with garden window" loading="lazy" />
-              <span className="gallery-item-caption">04 · The Operatory Suite</span>
-            </Reveal>
-          </div>
-
-          <div style={{ marginTop: "2.5rem", textAlign: "center" }}>
-            <Link to="/gallery" className="btn-secondary" style={{ paddingInline: "2rem" }}>
-              <span>View Full Studio Gallery</span>
-              <ArrowUpRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* SECTION 08 — THE PHYSICAL ENVIRONMENT & ARCHITECTURE (Moved to later part before visiting) */}
+      <ClinicStorySequence indexNum="04" />
 
       {/* SECTION 09 — PATIENT EXPERIENCE & ETHICAL CODE */}
       <section className="section-ethics">
@@ -261,7 +215,7 @@ function HomePage() {
       <section className="section-philosophy" style={{ borderTop: "1px solid var(--border-subtle)" }}>
         <div className="container-wide">
           <SectionHeading
-            index="08"
+            index="05"
             label="COMMON QUESTIONS"
             title={
               <>
