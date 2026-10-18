@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowDown, ArrowUpRight, Eye, EyeOff, MessageCircle, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowUpRight, MessageCircle, Sparkles } from "lucide-react";
 import { media, clinic, whatsapp } from "@/lib/site-data";
 import { Magnetic } from "@/components/motion/Magnetic";
 
@@ -16,7 +16,6 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [heroRevealed, setHeroRevealed] = useState(false);
-  const [cinemaMode, setCinemaMode] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -200,7 +199,7 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
 
   return (
     <section
-      className={`hero-cinematic ${videoLoaded ? "video-ready" : ""} ${heroRevealed ? "hero-revealed" : ""} ${cinemaMode ? "cinema-mode" : ""}`}
+      className={`hero-cinematic ${videoLoaded ? "video-ready" : ""} ${heroRevealed ? "hero-revealed" : ""}`}
       aria-label="Welcome to Dr. Ameen's Smile Studio"
     >
       <div className="hero-video-wrapper">
@@ -272,18 +271,6 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
         {/* Ambient Architectural Vignette & Text Scrim */}
         <div className="hero-scrim" />
       </div>
-
-      {/* Luxury Cinema Mode Toggle (Allows admiring clinic walkthrough unobstructed) */}
-      <button
-        type="button"
-        onClick={() => setCinemaMode((prev) => !prev)}
-        className={`hero-cinema-toggle ${cinemaMode ? "is-active" : ""}`}
-        aria-label={cinemaMode ? "Exit cinema view and display text" : "Cinema view (unobstructed video)"}
-        title={cinemaMode ? "Show details" : "Unobstructed view"}
-      >
-        {cinemaMode ? <Eye size={13} /> : <EyeOff size={13} />}
-        <span>{cinemaMode ? "Show Details" : "Cinema View"}</span>
-      </button>
 
       {/* Hero Content with 3D Spatial Stage & Creative Mask Reveals */}
       <div className="container-wide hero-inner-container hero-spatial-stage">

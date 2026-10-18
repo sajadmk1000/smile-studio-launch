@@ -614,52 +614,8 @@ p, li, span, a, label {
   transition: opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.hero-cinematic.hero-revealed:not(.cinema-mode) .hero-scrim {
+.hero-cinematic.hero-revealed .hero-scrim {
   opacity: 1;
-}
-
-.hero-cinematic.cinema-mode .hero-scrim {
-  opacity: 0.12;
-  transition: opacity 0.7s ease;
-}
-
-/* Cinema View Toggle (Allows admiring clinic walkthrough unobstructed) */
-.hero-cinema-toggle {
-  position: absolute;
-  top: calc(var(--header-height) + 1.25rem);
-  right: clamp(1.25rem, 4vw, 3rem);
-  z-index: 10;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 0.95rem;
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--fg-inverse);
-  background: rgba(18, 21, 20, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(250, 248, 245, 0.18);
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-}
-
-.hero-cinema-toggle:hover {
-  background: rgba(18, 21, 20, 0.85);
-  border-color: var(--accent-champagne);
-  color: var(--accent-champagne-light);
-  transform: translateY(-1px);
-}
-
-.hero-cinema-toggle.is-active {
-  background: rgba(212, 175, 55, 0.22);
-  border-color: var(--accent-champagne);
-  color: var(--accent-champagne-light);
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
 }
 
 /* Hero Content Positioning */
@@ -690,8 +646,7 @@ p, li, span, a, label {
 }
 
 /* Unrevealed 3D State: tilted back in Z-space with soft blur */
-.hero-cinematic:not(.hero-revealed) .hero-spatial-item,
-.hero-cinematic.cinema-mode .hero-spatial-item {
+.hero-cinematic:not(.hero-revealed) .hero-spatial-item {
   opacity: 0;
   transform: translate3d(0, 36px, -70px) rotateX(-18deg) scale(0.94);
   filter: blur(10px);
@@ -699,7 +654,7 @@ p, li, span, a, label {
 }
 
 /* Snappy 3D Entrance for spatial items */
-.hero-cinematic.hero-revealed:not(.cinema-mode) .hero-spatial-item {
+.hero-cinematic.hero-revealed .hero-spatial-item {
   opacity: 1;
   transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
   filter: blur(0px);
@@ -722,13 +677,12 @@ p, li, span, a, label {
   transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s ease;
 }
 
-.hero-cinematic:not(.hero-revealed) .hero-micro-divider,
-.hero-cinematic.cinema-mode .hero-micro-divider {
+.hero-cinematic:not(.hero-revealed) .hero-micro-divider {
   opacity: 0;
   transform: scaleX(0);
 }
 
-.hero-cinematic.hero-revealed:not(.cinema-mode) .hero-micro-divider {
+.hero-cinematic.hero-revealed .hero-micro-divider {
   opacity: 0.9;
   transform: scaleX(1);
   transition-delay: 0.08s;
@@ -760,8 +714,7 @@ p, li, span, a, label {
 }
 
 /* Masked hidden state: words emerge from below the clip plane with 3D rotation */
-.hero-cinematic:not(.hero-revealed) .hero-word-kinetic,
-.hero-cinematic.cinema-mode .hero-word-kinetic {
+.hero-cinematic:not(.hero-revealed) .hero-word-kinetic {
   opacity: 0;
   transform: translate3d(0, 120%, -60px) rotateX(-35deg) scale(0.92);
   filter: blur(12px);
@@ -769,7 +722,7 @@ p, li, span, a, label {
 }
 
 /* Words rise dynamically into crystalline clarity */
-.hero-cinematic.hero-revealed:not(.cinema-mode) .hero-word-kinetic {
+.hero-cinematic.hero-revealed .hero-word-kinetic {
   opacity: 1;
   transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
   filter: blur(0px);
@@ -777,35 +730,35 @@ p, li, span, a, label {
 }
 
 /* Creative Stagger Delays for each word unit */
-.hero-cinematic.hero-revealed:not(.cinema-mode) .hero-spatial-d1 {
+.hero-cinematic.hero-revealed .hero-spatial-d1 {
   transition-delay: 0.02s;
 }
 
-.hero-cinematic.hero-revealed:not(.cinema-mode) .hero-k1 {
+.hero-cinematic.hero-revealed .hero-k1 {
   transition-delay: 0.06s;
 }
 
-.hero-cinematic.hero-revealed:not(.cinema-mode) .hero-k2 {
+.hero-cinematic.hero-revealed .hero-k2 {
   transition-delay: 0.16s;
 }
 
-.hero-cinematic.hero-revealed:not(.cinema-mode) .hero-k3 {
+.hero-cinematic.hero-revealed .hero-k3 {
   transition-delay: 0.24s;
 }
 
-.hero-cinematic.hero-revealed:not(.cinema-mode) .hero-k4 {
+.hero-cinematic.hero-revealed .hero-k4 {
   transition-delay: 0.38s;
 }
 
-.hero-cinematic.hero-revealed:not(.cinema-mode) .hero-spatial-lead {
+.hero-cinematic.hero-revealed .hero-spatial-lead {
   transition-delay: 0.52s;
 }
 
-.hero-cinematic.hero-revealed:not(.cinema-mode) .hero-spatial-actions {
+.hero-cinematic.hero-revealed .hero-spatial-actions {
   transition-delay: 0.64s;
 }
 
-.hero-cinematic.hero-revealed:not(.cinema-mode) .hero-spatial-d5 {
+.hero-cinematic.hero-revealed .hero-spatial-d5 {
   transition-delay: 0.78s;
 }
 
@@ -819,21 +772,13 @@ p, li, span, a, label {
   filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.35));
 }
 
-.hero-cinematic.hero-revealed:not(.cinema-mode) .text-glow-champagne {
+.hero-cinematic.hero-revealed .text-glow-champagne {
   animation: champagneLightSweep 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.45s 1 normal forwards;
 }
 
 @keyframes champagneLightSweep {
   0% { background-position: 100% center; }
   100% { background-position: 0% center; }
-}
-
-/* Instant retraction when cinema view is triggered */
-.hero-cinematic.cinema-mode .hero-spatial-item,
-.hero-cinematic.cinema-mode .hero-word-kinetic,
-.hero-cinematic.cinema-mode .hero-micro-divider {
-  transition-duration: 0.35s;
-  transition-delay: 0s !important;
 }
 
 .hero-badge-row {
@@ -1025,24 +970,15 @@ p, li, span, a, label {
     display: none;
   }
 
-  .hero-cinema-toggle {
-    top: calc(var(--header-height) + 0.65rem);
-    right: 1rem;
-    padding: 0.35rem 0.75rem;
-    font-size: 0.68rem;
-  }
-
   .hero-spatial-stage {
     perspective: 800px;
   }
 
-  .hero-cinematic:not(.hero-revealed) .hero-spatial-item,
-  .hero-cinematic.cinema-mode .hero-spatial-item {
+  .hero-cinematic:not(.hero-revealed) .hero-spatial-item {
     transform: translate3d(0, 26px, -45px) rotateX(-14deg) scale(0.95);
   }
 
-  .hero-cinematic:not(.hero-revealed) .hero-word-kinetic,
-  .hero-cinematic.cinema-mode .hero-word-kinetic {
+  .hero-cinematic:not(.hero-revealed) .hero-word-kinetic {
     transform: translate3d(0, 115%, -35px) rotateX(-25deg) scale(0.94);
   }
 }
