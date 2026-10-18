@@ -48,8 +48,8 @@ function TreatmentDetailPage() {
   const t = Route.useLoaderData();
 
   const currentIndex = treatments.findIndex((item) => item.slug === t.slug);
-  const prevTreatment = treatments[(currentIndex - 1 + treatments.length) % treatments.length];
-  const nextTreatment = treatments[(currentIndex + 1) % treatments.length];
+  const prevTreatment = treatments[(currentIndex - 1 + treatments.length) % treatments.length] ?? treatments[0]!;
+  const nextTreatment = treatments[(currentIndex + 1) % treatments.length] ?? treatments[0]!;
 
   return (
     <main>

@@ -59,13 +59,13 @@ function AboutPage() {
               From biomimetic smile designing to gentle root canal therapies, our treatment protocols focus on preserving maximum natural tooth structure. We combine modern materials with an eye for anatomical harmony.
             </p>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginTop: "2rem" }}>
-              <div style={{ padding: "1.25rem", backgroundColor: "var(--bg-secondary)", borderRadius: "4px" }}>
+            <div className="about-features-grid">
+              <div className="about-feature-card">
                 <ShieldCheck size={24} color="var(--accent-champagne-dark)" style={{ marginBottom: "0.5rem" }} />
                 <h4 style={{ margin: "0 0 0.25rem", fontSize: "1.1rem", fontFamily: "var(--font-display)" }}>Hospital-Grade Sterilization</h4>
                 <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--fg-secondary)" }}>Autoclaved instrument packs sealed and opened in front of you.</p>
               </div>
-              <div style={{ padding: "1.25rem", backgroundColor: "var(--bg-secondary)", borderRadius: "4px" }}>
+              <div className="about-feature-card">
                 <HeartHandshake size={24} color="var(--accent-champagne-dark)" style={{ marginBottom: "0.5rem" }} />
                 <h4 style={{ margin: "0 0 0.25rem", fontSize: "1.1rem", fontFamily: "var(--font-display)" }}>Conservative Dentistry</h4>
                 <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--fg-secondary)" }}>Prioritizing natural tooth preservation above unnecessary intervention.</p>
@@ -77,20 +77,20 @@ function AboutPage() {
 
       {/* Visual Showcase: Reception & Lounge */}
       <section className="container-wide" style={{ paddingBottom: "clamp(4.5rem, 8vw, 7.5rem)" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "1.75rem" }}>
-          <Reveal style={{ position: "relative", borderRadius: "4px", overflow: "hidden", minHeight: "440px" }}>
+        <div className="about-photos-grid">
+          <Reveal className="about-photo-frame">
             <img
               src={media.reception}
               alt="Consultation desk at Dr. Ameen's Smile Studio"
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              className="about-photo-img"
               loading="lazy"
             />
           </Reveal>
-          <Reveal style={{ position: "relative", borderRadius: "4px", overflow: "hidden", minHeight: "440px" }}>
+          <Reveal className="about-photo-frame">
             <img
               src={media.waiting}
               alt="Waiting lounge facing street trees"
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              className="about-photo-img"
               loading="lazy"
             />
           </Reveal>
@@ -111,9 +111,9 @@ function AboutPage() {
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem" }}>
+          <div className="about-credentials-grid">
             {certificates.map((cert) => (
-              <div key={cert.title} style={{ padding: "1.75rem", backgroundColor: "var(--bg-primary)", borderRadius: "4px", border: "1px solid var(--border-subtle)", boxShadow: "var(--shadow-sm)" }}>
+              <div key={cert.title} className="about-credential-card">
                 <span className="index-num" style={{ fontSize: "1rem", color: "var(--accent-champagne-dark)", display: "block", marginBottom: "0.5rem" }}>{cert.issuer}</span>
                 <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.35rem", margin: "0 0 0.5rem" }}>{cert.title}</h3>
                 <p style={{ margin: 0, fontSize: "0.88rem", color: "var(--fg-secondary)", lineHeight: 1.6 }}>{cert.description}</p>

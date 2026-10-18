@@ -4,7 +4,7 @@ import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { treatments, type Treatment } from "@/lib/site-data";
 
 export function TreatmentNavigator() {
-  const [activeTreatment, setActiveTreatment] = useState<Treatment>(treatments[0]);
+  const [activeTreatment, setActiveTreatment] = useState<Treatment>(treatments[0]!);
 
   return (
     <div className="treatment-navigator-layout">

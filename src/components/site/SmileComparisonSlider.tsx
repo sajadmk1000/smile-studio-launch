@@ -28,7 +28,7 @@ export function SmileComparisonSlider() {
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const activeCase = CASES[0];
+  const activeCase = CASES[0]!;
 
   const handleMove = useCallback((clientX: number) => {
     const container = containerRef.current;

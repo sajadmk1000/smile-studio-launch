@@ -22,7 +22,7 @@ export function SplitTextReveal({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry?.isIntersecting) {
           setIsVisible(true);
           observer.unobserve(el);
         }
@@ -78,7 +78,7 @@ export function EnamelReveal({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry?.isIntersecting) {
           setRevealed(true);
           observer.unobserve(el);
         }

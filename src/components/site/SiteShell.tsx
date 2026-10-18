@@ -55,14 +55,7 @@ export function SiteHeader() {
     };
   }, [mobileMenuOpen]);
 
-  const navLinks = [
-    { to: "/treatments", label: "Treatments", exact: true },
-    { to: "/treatments/smile-designing", label: "Smile Design" },
-    { to: "/about", label: "About" },
-    { to: "/gallery", label: "Studio" },
-    { to: "/faq", label: "FAQ" },
-    { to: "/contact", label: "Contact" },
-  ];
+
 
   let headerClass = "site-header";
   if (mobileMenuOpen) {
@@ -99,17 +92,50 @@ export function SiteHeader() {
 
           {/* Desktop Navigation */}
           <nav className="nav-links-desktop" aria-label="Main Navigation">
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className="nav-link-item"
-                activeProps={{ className: "nav-link-item active" }}
-                activeOptions={link.exact ? { exact: true } : undefined}
-              >
-                {link.label}
-              </Link>
-            ))}
+            <Link
+              to="/treatments"
+              className="nav-link-item"
+              activeProps={{ className: "nav-link-item active" }}
+              activeOptions={{ exact: true }}
+            >
+              Treatments
+            </Link>
+            <Link
+              to="/treatments/$slug"
+              params={{ slug: "smile-designing" }}
+              className="nav-link-item"
+              activeProps={{ className: "nav-link-item active" }}
+            >
+              Smile Design
+            </Link>
+            <Link
+              to="/about"
+              className="nav-link-item"
+              activeProps={{ className: "nav-link-item active" }}
+            >
+              About
+            </Link>
+            <Link
+              to="/gallery"
+              className="nav-link-item"
+              activeProps={{ className: "nav-link-item active" }}
+            >
+              Studio
+            </Link>
+            <Link
+              to="/faq"
+              className="nav-link-item"
+              activeProps={{ className: "nav-link-item active" }}
+            >
+              FAQ
+            </Link>
+            <Link
+              to="/contact"
+              className="nav-link-item"
+              activeProps={{ className: "nav-link-item active" }}
+            >
+              Contact
+            </Link>
           </nav>
 
           {/* Header Action Buttons */}
@@ -156,7 +182,8 @@ export function SiteHeader() {
             Treatments <span>01</span>
           </Link>
           <Link
-            to="/treatments/smile-designing"
+            to="/treatments/$slug"
+            params={{ slug: "smile-designing" }}
             className="mobile-nav-item"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -245,7 +272,7 @@ export function SiteFooter() {
           <ul className="footer-nav-list">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/treatments">All Treatments</Link></li>
-            <li><Link to="/treatments/smile-designing">Smile Designing</Link></li>
+            <li><Link to="/treatments/$slug" params={{ slug: "smile-designing" }}>Smile Designing</Link></li>
             <li><Link to="/gallery">Inside the Studio</Link></li>
             <li><Link to="/about">About the Clinic</Link></li>
             <li><Link to="/faq">Questions & Answers</Link></li>

@@ -68,7 +68,7 @@ export function BookingLinks({
   light?: boolean;
 }) {
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "1.25rem" }}>
+    <div className="booking-links-cluster" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "1.25rem" }}>
       <Link
         to="/contact"
         search={{ interest: interest ?? "" }}
@@ -125,7 +125,7 @@ export function LocationBlock() {
             Kozhikode District, Kerala 673572
           </p>
 
-          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+          <div className="location-actions-cluster" style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
             <button
               type="button"
               onClick={handleCopy}

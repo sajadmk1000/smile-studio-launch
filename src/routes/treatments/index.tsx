@@ -193,8 +193,8 @@ function TreatmentsIndexPage() {
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2rem" }}>
-            <div style={{ padding: "2rem", backgroundColor: "var(--bg-primary)", borderRadius: "4px", border: "1px solid var(--border-subtle)" }}>
+          <div className="treatments-standards-grid">
+            <div className="treatments-standard-card">
               <Microscope size={28} color="var(--accent-champagne-dark)" style={{ marginBottom: "1rem" }} />
               <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.45rem", margin: "0 0 0.5rem" }}>
                 Diagnostic Accuracy
@@ -204,7 +204,7 @@ function TreatmentsIndexPage() {
               </p>
             </div>
 
-            <div style={{ padding: "2rem", backgroundColor: "var(--bg-primary)", borderRadius: "4px", border: "1px solid var(--border-subtle)" }}>
+            <div className="treatments-standard-card">
               <ShieldCheck size={28} color="var(--accent-champagne-dark)" style={{ marginBottom: "1rem" }} />
               <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.45rem", margin: "0 0 0.5rem" }}>
                 Tooth Structure Preservation
@@ -214,7 +214,7 @@ function TreatmentsIndexPage() {
               </p>
             </div>
 
-            <div style={{ padding: "2rem", backgroundColor: "var(--bg-primary)", borderRadius: "4px", border: "1px solid var(--border-subtle)" }}>
+            <div className="treatments-standard-card">
               <HeartHandshake size={28} color="var(--accent-champagne-dark)" style={{ marginBottom: "1rem" }} />
               <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.45rem", margin: "0 0 0.5rem" }}>
                 Direct Doctor Consultation

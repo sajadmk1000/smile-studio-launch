@@ -61,7 +61,7 @@ export function VIPBookingModal({
       if (d.getDay() !== 0) {
         dates.push({
           label: d.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
-          dateStr: d.toISOString().split("T")[0],
+          dateStr: d.toISOString().split("T")[0]!,
           dayName: d.toLocaleDateString("en-US", { weekday: "short" }),
         });
         added++;
@@ -69,7 +69,7 @@ export function VIPBookingModal({
       i++;
     }
     setAvailableDates(dates);
-    if (dates.length > 0) {
+    if (dates.length > 0 && dates[0]) {
       setSelectedDate(dates[0].dateStr);
     }
   }, []);

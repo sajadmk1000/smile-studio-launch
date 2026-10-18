@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowDown, ArrowUpRight, MessageCircle, Pause, Play, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowUpRight, MessageCircle, Sparkles } from "lucide-react";
 import { media, clinic, whatsapp } from "@/lib/site-data";
 import { Magnetic } from "@/components/motion/Magnetic";
 
@@ -11,7 +11,6 @@ interface CinematicHeroProps {
 export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const [isMobile, setIsMobile] = useState(false);
@@ -34,7 +33,6 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
 
     if (mediaQuery.matches) {
       video.pause();
-      setIsPlaying(false);
       return;
     }
 
@@ -48,14 +46,9 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
       setVideoLoaded(true);
       const playPromise = video.play();
       if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setIsPlaying(true);
-          })
-          .catch(() => {
-            // Autoplay deferred by browser low-power mode
-            setIsPlaying(false);
-          });
+        playPromise.catch(() => {
+          // Autoplay deferred by browser low-power mode
+        });
       }
     };
 
@@ -73,7 +66,6 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
       if (video && video.paused) {
         video.play().then(() => {
           setVideoLoaded(true);
-          setIsPlaying(true);
         }).catch(() => {});
       }
       window.removeEventListener("touchstart", handleFirstTouch);
@@ -87,20 +79,6 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
       window.removeEventListener("touchstart", handleFirstTouch);
     };
   }, [isMobile]);
-
-  const togglePlayback = () => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (video.paused) {
-      video.play().then(() => {
-        setIsPlaying(true);
-      }).catch(() => {});
-    } else {
-      video.pause();
-      setIsPlaying(false);
-    }
-  };
 
   const activeVideoSrc = isMobile && media.heroVideoMobile ? media.heroVideoMobile : media.heroVideo;
   const activePosterSrc = isMobile && media.heroPosterMobile ? media.heroPosterMobile : media.heroPoster;
@@ -141,19 +119,6 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
         {/* Ambient Architectural Vignette & Text Scrim */}
         <div className="hero-scrim" />
       </div>
-
-      {/* Interactive Tour Play/Pause Toggle */}
-      {!prefersReducedMotion && (
-        <button
-          type="button"
-          onClick={togglePlayback}
-          className="hero-video-toggle"
-          aria-label={isPlaying ? "Pause studio walkthrough video" : "Play studio walkthrough video"}
-        >
-          {isPlaying ? <Pause size={12} /> : <Play size={12} />}
-          <span>{isPlaying ? "Pause Tour" : "Play Tour"}</span>
-        </button>
-      )}
 
       {/* Hero Content with Spatial Typography */}
       <div className="container-wide hero-inner-container">
@@ -242,7 +207,7 @@ export function Reveal({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry?.isIntersecting) {
           setIsVisible(true);
           observer.disconnect();
         }

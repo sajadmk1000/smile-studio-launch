@@ -146,57 +146,32 @@ function GalleryPage() {
           role="dialog"
           aria-modal="true"
           aria-label={activePhoto.title}
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 100,
-            backgroundColor: "rgba(18, 21, 20, 0.94)",
-            backdropFilter: "blur(12px)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "2rem",
-          }}
+          className="gallery-lightbox-backdrop"
           onClick={() => setActivePhoto(null)}
         >
           <button
             type="button"
             aria-label="Close modal"
-            style={{
-              position: "absolute",
-              top: "2rem",
-              right: "2rem",
-              color: "#FAF8F5",
-              padding: "0.5rem",
-              borderRadius: "50%",
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-            }}
+            className="gallery-lightbox-close"
             onClick={() => setActivePhoto(null)}
           >
-            <X size={26} />
+            <X size={24} />
           </button>
 
           <div
-            style={{ maxWidth: "1200px", maxHeight: "80vh", position: "relative" }}
+            className="gallery-lightbox-container"
             onClick={(e) => e.stopPropagation()}
           >
             <img
               src={activePhoto.src}
               alt={activePhoto.alt}
-              style={{
-                maxWidth: "100%",
-                maxHeight: "75vh",
-                borderRadius: "4px",
-                boxShadow: "0 25px 60px rgba(0,0,0,0.6)",
-                objectFit: "contain",
-              }}
+              className="gallery-lightbox-img"
             />
-            <div style={{ marginTop: "1rem", color: "#FAF8F5", textAlign: "center" }}>
-              <span style={{ fontSize: "0.75rem", letterSpacing: "0.18em", color: "var(--accent-champagne)", textTransform: "uppercase" }}>
+            <div className="gallery-lightbox-meta">
+              <span className="gallery-lightbox-tag">
                 {activePhoto.label}
               </span>
-              <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.5rem", margin: "0.25rem 0 0" }}>
+              <h3 className="gallery-lightbox-title">
                 {activePhoto.title}
               </h3>
             </div>

@@ -13,7 +13,7 @@ import { Eyebrow, LocationBlock, PageIntro } from "@/components/site/Elements";
 import { clinic, treatments } from "@/lib/site-data";
 
 export const Route = createFileRoute("/contact")({
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (search: Record<string, unknown>): { interest?: string | undefined } => ({
     interest: typeof search["interest"] === "string" ? search["interest"] : undefined,
   }),
   head: () => ({
@@ -158,7 +158,7 @@ function ContactPage() {
               Kerala 673572, India
             </p>
 
-            <div style={{ display: "flex", gap: "1rem", marginTop: "1.25rem", flexWrap: "wrap" }}>
+            <div className="contact-actions-row" style={{ display: "flex", gap: "1rem", marginTop: "1.25rem", flexWrap: "wrap" }}>
               <button
                 type="button"
                 onClick={handleCopyAddress}
