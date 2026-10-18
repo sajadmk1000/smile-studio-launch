@@ -1539,13 +1539,41 @@ p, li, span, a, label {
   max-width: 580px;
 }
 
+.apple-mobile-minimal-tag {
+  display: none;
+}
+
 @media (max-width: 768px) {
-  .apple-plaque-desc {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    margin-bottom: 0.75rem;
+  /* Hide the large overlay text card on mobile so the architectural photography is 100% visible */
+  .apple-spatial-plaque {
+    display: none !important;
+  }
+
+  .apple-card-gradient-scrim {
+    opacity: 0.1 !important;
+  }
+
+  .apple-mobile-minimal-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    position: absolute;
+    bottom: 1.15rem;
+    left: 1.15rem;
+    z-index: 3;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #ffffff;
+    background: rgba(14, 18, 16, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 9999px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    pointer-events: none;
   }
 }
 

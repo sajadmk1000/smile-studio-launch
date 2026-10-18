@@ -339,6 +339,13 @@ export function ClinicStorySequence({ indexNum = "06" }: ClinicStorySequenceProp
                         </div>
                       </div>
                     </div>
+
+                    {/* Subtle Mobile Minimal Identification Pill (Clean, unobtrusive, leaves 97% of photo pure) */}
+                    <div className="apple-mobile-minimal-tag" aria-hidden="true">
+                      <span className="text-accent-champagne">{space.index}</span>
+                      <span>·</span>
+                      <span>{space.tabLabel}</span>
+                    </div>
                   </div>
                 </div>
               );
