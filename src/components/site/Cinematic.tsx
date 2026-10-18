@@ -48,10 +48,10 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
     window.addEventListener("wheel", onUserAction, { passive: true, once: true });
     window.addEventListener("touchmove", onUserAction, { passive: true, once: true });
 
-    // Fallback timer: ensure text reveals within 1.8s even on slow network
+    // Fallback timer: ensure text reveals within 3.4s even on slow network
     const fallbackTimer = setTimeout(() => {
       triggerReveal();
-    }, 1800);
+    }, 3400);
 
     if (!video) {
       return () => {
@@ -75,10 +75,10 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
 
     const scheduleSpatialReveal = () => {
       if (!revealTimer) {
-        // Let the establishing shot move toward the clinic room unobstructed for 1.3s
+        // Let the establishing shot move toward the clinic room unobstructed for 2.6s
         revealTimer = setTimeout(() => {
           triggerReveal();
-        }, 1300);
+        }, 2600);
       }
     };
 
@@ -186,26 +186,38 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
         <span>{cinemaMode ? "Show Details" : "Cinema View"}</span>
       </button>
 
-      {/* Hero Content with 3D Spatial Typography */}
+      {/* Hero Content with 3D Spatial Stage & Creative Mask Reveals */}
       <div className="container-wide hero-inner-container hero-spatial-stage">
         <div className="hero-badge-row hero-spatial-item hero-spatial-d1">
-          <span className="eyebrow-tag light">
+          <span className="eyebrow-tag light hero-badge-glow">
             <Sparkles size={12} className="text-accent-champagne" /> SOUTH KODUVALLY · KOZHIKODE, KERALA
           </span>
         </div>
 
-        <div className="hero-title-group hero-title-drift hero-spatial-item hero-spatial-d2">
+        {/* Architectural hairline accent that draws across */}
+        <div className="hero-micro-divider hero-spatial-item" />
+
+        {/* Creative Split-Word Kinetic Reveal Headline */}
+        <div className="hero-title-group">
           <h1 className="display-hero">
-            Care, down to <br />
-            <span className="display-italic">the details.</span>
+            <span className="hero-line-mask">
+              <span className="hero-word-kinetic hero-k1">Care,</span>{" "}
+              <span className="hero-word-kinetic hero-k2">down</span>{" "}
+              <span className="hero-word-kinetic hero-k3">to</span>
+            </span>
+            <span className="hero-line-mask hero-line-accent">
+              <span className="hero-word-kinetic hero-k4 display-italic text-glow-champagne">
+                the details.
+              </span>
+            </span>
           </h1>
         </div>
 
-        <p className="hero-lead-text hero-spatial-item hero-spatial-d3">
+        <p className="hero-lead-text hero-spatial-item hero-spatial-lead">
           A physical dental sanctuary designed around quiet conversation, facial harmony, and honest medical clarity.
         </p>
 
-        <div className="hero-actions-row hero-spatial-item hero-spatial-d4">
+        <div className="hero-actions-row hero-spatial-item hero-spatial-actions">
           <Magnetic strength={0.3}>
             {onOpenBooking ? (
               <button
