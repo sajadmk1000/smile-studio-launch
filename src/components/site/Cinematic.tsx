@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowDown, ArrowUpRight, MessageCircle, Sparkles } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Eye, EyeOff, MessageCircle, Sparkles } from "lucide-react";
 import { media, clinic, whatsapp } from "@/lib/site-data";
 import { Magnetic } from "@/components/motion/Magnetic";
 
@@ -12,8 +12,9 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
   const [isMobile, setIsMobile] = useState(false);
+  const [heroRevealed, setHeroRevealed] = useState(false);
+  const [cinemaMode, setCinemaMode] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -28,8 +29,38 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mediaQuery.matches);
 
+    if (mediaQuery.matches) {
+      setHeroRevealed(true);
+    }
+
     const video = videoRef.current;
-    if (!video) return;
+    let revealTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const triggerReveal = () => {
+      setHeroRevealed(true);
+    };
+
+    // User interaction failsafe: immediate reveal if user intends to interact
+    const onUserAction = () => {
+      triggerReveal();
+    };
+    window.addEventListener("scroll", onUserAction, { passive: true, once: true });
+    window.addEventListener("wheel", onUserAction, { passive: true, once: true });
+    window.addEventListener("touchmove", onUserAction, { passive: true, once: true });
+
+    // Fallback timer: ensure text reveals within 1.8s even on slow network
+    const fallbackTimer = setTimeout(() => {
+      triggerReveal();
+    }, 1800);
+
+    if (!video) {
+      return () => {
+        clearTimeout(fallbackTimer);
+        window.removeEventListener("scroll", onUserAction);
+        window.removeEventListener("wheel", onUserAction);
+        window.removeEventListener("touchmove", onUserAction);
+      };
+    }
 
     if (mediaQuery.matches) {
       video.pause();
@@ -42,19 +73,33 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
     video.setAttribute("playsinline", "true");
     video.setAttribute("webkit-playsinline", "true");
 
+    const scheduleSpatialReveal = () => {
+      if (!revealTimer) {
+        // Let the establishing shot move toward the clinic room unobstructed for 1.3s
+        revealTimer = setTimeout(() => {
+          triggerReveal();
+        }, 1300);
+      }
+    };
+
     const markReadyAndPlay = () => {
       setVideoLoaded(true);
       const playPromise = video.play();
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Autoplay deferred by browser low-power mode
-        });
+        playPromise
+          .then(() => {
+            scheduleSpatialReveal();
+          })
+          .catch(() => {
+            // Autoplay deferred by browser policy
+            triggerReveal();
+          });
       }
     };
 
     video.addEventListener("loadeddata", markReadyAndPlay);
     video.addEventListener("canplay", markReadyAndPlay);
-    video.addEventListener("playing", markReadyAndPlay);
+    video.addEventListener("playing", scheduleSpatialReveal);
 
     // Initial check if video is already ready in cache
     if (video.readyState >= 2) {
@@ -64,19 +109,28 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
     // Touch-to-unlock for mobile browsers with strict autoplay policies
     const handleFirstTouch = () => {
       if (video && video.paused) {
-        video.play().then(() => {
-          setVideoLoaded(true);
-        }).catch(() => {});
+        video
+          .play()
+          .then(() => {
+            setVideoLoaded(true);
+            scheduleSpatialReveal();
+          })
+          .catch(() => {});
       }
       window.removeEventListener("touchstart", handleFirstTouch);
     };
     window.addEventListener("touchstart", handleFirstTouch, { passive: true, once: true });
 
     return () => {
+      if (revealTimer) clearTimeout(revealTimer);
+      clearTimeout(fallbackTimer);
       video.removeEventListener("loadeddata", markReadyAndPlay);
       video.removeEventListener("canplay", markReadyAndPlay);
-      video.removeEventListener("playing", markReadyAndPlay);
+      video.removeEventListener("playing", scheduleSpatialReveal);
       window.removeEventListener("touchstart", handleFirstTouch);
+      window.removeEventListener("scroll", onUserAction);
+      window.removeEventListener("wheel", onUserAction);
+      window.removeEventListener("touchmove", onUserAction);
     };
   }, [isMobile]);
 
@@ -85,7 +139,7 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
 
   return (
     <section
-      className={`hero-cinematic ${videoLoaded ? "video-ready" : ""}`}
+      className={`hero-cinematic ${videoLoaded ? "video-ready" : ""} ${heroRevealed ? "hero-revealed" : ""} ${cinemaMode ? "cinema-mode" : ""}`}
       aria-label="Welcome to Dr. Ameen's Smile Studio"
     >
       <div className="hero-video-wrapper">
@@ -120,26 +174,38 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
         <div className="hero-scrim" />
       </div>
 
-      {/* Hero Content with Spatial Typography */}
-      <div className="container-wide hero-inner-container">
-        <div className="hero-badge-row">
+      {/* Luxury Cinema Mode Toggle (Allows admiring clinic walkthrough unobstructed) */}
+      <button
+        type="button"
+        onClick={() => setCinemaMode((prev) => !prev)}
+        className={`hero-cinema-toggle ${cinemaMode ? "is-active" : ""}`}
+        aria-label={cinemaMode ? "Exit cinema view and display text" : "Cinema view (unobstructed video)"}
+        title={cinemaMode ? "Show details" : "Unobstructed view"}
+      >
+        {cinemaMode ? <Eye size={13} /> : <EyeOff size={13} />}
+        <span>{cinemaMode ? "Show Details" : "Cinema View"}</span>
+      </button>
+
+      {/* Hero Content with 3D Spatial Typography */}
+      <div className="container-wide hero-inner-container hero-spatial-stage">
+        <div className="hero-badge-row hero-spatial-item hero-spatial-d1">
           <span className="eyebrow-tag light">
             <Sparkles size={12} className="text-accent-champagne" /> SOUTH KODUVALLY · KOZHIKODE, KERALA
           </span>
         </div>
 
-        <div className="hero-title-group hero-title-drift">
+        <div className="hero-title-group hero-title-drift hero-spatial-item hero-spatial-d2">
           <h1 className="display-hero">
             Care, down to <br />
             <span className="display-italic">the details.</span>
           </h1>
         </div>
 
-        <p className="hero-lead-text">
+        <p className="hero-lead-text hero-spatial-item hero-spatial-d3">
           A physical dental sanctuary designed around quiet conversation, facial harmony, and honest medical clarity.
         </p>
 
-        <div className="hero-actions-row">
+        <div className="hero-actions-row hero-spatial-item hero-spatial-d4">
           <Magnetic strength={0.3}>
             {onOpenBooking ? (
               <button
@@ -180,7 +246,7 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
       {/* Smooth Scroll Cue */}
       <a
         href="#discover"
-        className="hero-scroll-cue"
+        className="hero-scroll-cue hero-spatial-item hero-spatial-d5"
         aria-label="Scroll to discover the studio"
       >
         <span>Discover</span>
