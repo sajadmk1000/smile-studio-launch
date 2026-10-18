@@ -10,6 +10,7 @@ interface CinematicHeroProps {
 
 export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const backdropVideoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -18,7 +19,7 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= 768 || window.innerHeight > window.innerWidth);
     };
     checkMobile();
     window.addEventListener("resize", checkMobile);
@@ -34,6 +35,7 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
     }
 
     const video = videoRef.current;
+    const backdropVideo = backdropVideoRef.current;
     let revealTimer: ReturnType<typeof setTimeout> | null = null;
 
     const triggerReveal = () => {
@@ -64,14 +66,18 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
 
     if (mediaQuery.matches) {
       video.pause();
+      if (backdropVideo) backdropVideo.pause();
       return;
     }
 
     // Force strict mobile video attributes for iOS & Android
-    video.muted = true;
-    video.defaultMuted = true;
-    video.setAttribute("playsinline", "true");
-    video.setAttribute("webkit-playsinline", "true");
+    [video, backdropVideo].forEach((v) => {
+      if (!v) return;
+      v.muted = true;
+      v.defaultMuted = true;
+      v.setAttribute("playsinline", "true");
+      v.setAttribute("webkit-playsinline", "true");
+    });
 
     const scheduleSpatialReveal = () => {
       if (!revealTimer) {
@@ -84,11 +90,17 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
 
     const markReadyAndPlay = () => {
       setVideoLoaded(true);
+      if (backdropVideo && backdropVideo.paused) {
+        backdropVideo.play().catch(() => {});
+      }
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
             scheduleSpatialReveal();
+            if (backdropVideo && backdropVideo.paused) {
+              backdropVideo.play().catch(() => {});
+            }
           })
           .catch(() => {
             // Autoplay deferred by browser policy
@@ -97,9 +109,32 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
       }
     };
 
+    // Continuous video synchronization
+    const syncPlayback = () => {
+      if (backdropVideo && !backdropVideo.paused && Math.abs(video.currentTime - backdropVideo.currentTime) > 0.15) {
+        backdropVideo.currentTime = video.currentTime;
+      }
+    };
+
+    const handlePlaySync = () => {
+      scheduleSpatialReveal();
+      if (backdropVideo && backdropVideo.paused) {
+        backdropVideo.play().catch(() => {});
+      }
+    };
+
+    const handlePauseSync = () => {
+      if (backdropVideo && !backdropVideo.paused) {
+        backdropVideo.pause();
+      }
+    };
+
     video.addEventListener("loadeddata", markReadyAndPlay);
     video.addEventListener("canplay", markReadyAndPlay);
-    video.addEventListener("playing", scheduleSpatialReveal);
+    video.addEventListener("playing", handlePlaySync);
+    video.addEventListener("play", handlePlaySync);
+    video.addEventListener("pause", handlePauseSync);
+    video.addEventListener("timeupdate", syncPlayback);
 
     // Initial check if video is already ready in cache
     if (video.readyState >= 2) {
@@ -117,6 +152,9 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
           })
           .catch(() => {});
       }
+      if (backdropVideo && backdropVideo.paused) {
+        backdropVideo.play().catch(() => {});
+      }
       window.removeEventListener("touchstart", handleFirstTouch);
     };
     window.addEventListener("touchstart", handleFirstTouch, { passive: true, once: true });
@@ -126,7 +164,10 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
       clearTimeout(fallbackTimer);
       video.removeEventListener("loadeddata", markReadyAndPlay);
       video.removeEventListener("canplay", markReadyAndPlay);
-      video.removeEventListener("playing", scheduleSpatialReveal);
+      video.removeEventListener("playing", handlePlaySync);
+      video.removeEventListener("play", handlePlaySync);
+      video.removeEventListener("pause", handlePauseSync);
+      video.removeEventListener("timeupdate", syncPlayback);
       window.removeEventListener("touchstart", handleFirstTouch);
       window.removeEventListener("scroll", onUserAction);
       window.removeEventListener("wheel", onUserAction);
@@ -134,8 +175,9 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
     };
   }, [isMobile]);
 
-  const activeVideoSrc = isMobile && media.heroVideoMobile ? media.heroVideoMobile : media.heroVideo;
-  const activePosterSrc = isMobile && media.heroPosterMobile ? media.heroPosterMobile : media.heroPoster;
+  // Use master 16:9 uncropped video with mirrored ambient backdrop
+  const activeVideoSrc = media.heroVideo;
+  const activePosterSrc = media.heroPoster;
 
   return (
     <section
@@ -143,7 +185,15 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
       aria-label="Welcome to Dr. Ameen's Smile Studio"
     >
       <div className="hero-video-wrapper">
-        {/* Instant high-resolution poster frame prevents any blank flash */}
+        {/* Mobile Ambient Blurred Backdrop Poster */}
+        <img
+          src={activePosterSrc}
+          alt=""
+          className="hero-poster-backdrop"
+          aria-hidden="true"
+        />
+
+        {/* Foreground Poster Frame */}
         <img
           src={activePosterSrc}
           alt="Exterior and consultation suite of Dr. Ameen's Smile Studio"
@@ -152,23 +202,44 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
           fetchPriority="high"
         />
 
-        {/* Cinematic Walkthrough Video: switches to portrait video on mobile */}
+        {/* Cinematic Walkthrough Video: Foreground + Mobile Ambient Blurred Backdrop */}
         {!prefersReducedMotion && (
-          <video
-            ref={videoRef}
-            key={isMobile ? "mobile-portrait-video" : "desktop-landscape-video"}
-            className="hero-video"
-            muted
-            playsInline
-            loop
-            autoPlay
-            preload="auto"
-            poster={activePosterSrc}
-            aria-hidden="true"
-          >
-            <source src={activeVideoSrc} type="video/mp4" />
-          </video>
+          <>
+            {/* Ambient Blurred Backdrop Mirror (Mobile only, zero crop companion) */}
+            <video
+              ref={backdropVideoRef}
+              className="hero-video-backdrop"
+              muted
+              playsInline
+              loop
+              autoPlay
+              preload="auto"
+              poster={activePosterSrc}
+              aria-hidden="true"
+              tabIndex={-1}
+            >
+              <source src={activeVideoSrc} type="video/mp4" />
+            </video>
+
+            {/* Main Foreground Video (16:9 uncropped on mobile, full bleed on desktop) */}
+            <video
+              ref={videoRef}
+              className="hero-video"
+              muted
+              playsInline
+              loop
+              autoPlay
+              preload="auto"
+              poster={activePosterSrc}
+              aria-hidden="true"
+            >
+              <source src={activeVideoSrc} type="video/mp4" />
+            </video>
+          </>
         )}
+
+        {/* Mobile Edge Blending Vignette Overlay */}
+        <div className="hero-ambient-vignette" />
 
         {/* Ambient Architectural Vignette & Text Scrim */}
         <div className="hero-scrim" />
