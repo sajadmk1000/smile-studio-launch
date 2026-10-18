@@ -12,4 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Outside Lovable builds the default target is Cloudflare; pin Netlify so the
+  // SSR function lands in .netlify/functions-internal and assets in dist.
+  // Lovable's own builds still override this via LOVABLE_NITRO_PRESET.
+  nitro: { preset: "netlify" },
 });
