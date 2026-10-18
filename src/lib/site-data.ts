@@ -1,7 +1,7 @@
 export const clinic = {
   name: "Dr. Ameen's Smile Studio",
   subtitle: "Multi Speciality Dental Clinic",
-  tagline: "Care, down to the details.",
+  tagline: "Precision in every detail. Confidence in every smile.",
   phone: "+91 73063 08876",
   tel: "+917306308876",
   displayPhone: "+91 73063 08876",

@@ -287,13 +287,16 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
         <div className="hero-title-group">
           <h1 className="display-hero">
             <span className="hero-line-mask">
-              <span className="hero-word-kinetic hero-k1">Care,</span>{" "}
-              <span className="hero-word-kinetic hero-k2">down</span>{" "}
-              <span className="hero-word-kinetic hero-k3">to</span>
+              <span className="hero-word-kinetic hero-k1">Precision</span>{" "}
+              <span className="hero-word-kinetic hero-k2">in</span>{" "}
+              <span className="hero-word-kinetic hero-k3">every</span>{" "}
+              <span className="hero-word-kinetic hero-k4">detail.</span>
             </span>
             <span className="hero-line-mask hero-line-accent">
-              <span className="hero-word-kinetic hero-k4 display-italic text-glow-champagne">
-                the details.
+              <span className="hero-word-kinetic hero-k5">Confidence</span>{" "}
+              <span className="hero-word-kinetic hero-k6">in</span>{" "}
+              <span className="hero-word-kinetic hero-k7 display-italic text-glow-champagne">
+                every smile.
               </span>
             </span>
           </h1>

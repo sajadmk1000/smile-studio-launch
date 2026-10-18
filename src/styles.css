@@ -739,27 +739,39 @@ p, li, span, a, label {
 }
 
 .hero-cinematic.hero-revealed .hero-k2 {
-  transition-delay: 0.16s;
+  transition-delay: 0.14s;
 }
 
 .hero-cinematic.hero-revealed .hero-k3 {
-  transition-delay: 0.24s;
+  transition-delay: 0.22s;
 }
 
 .hero-cinematic.hero-revealed .hero-k4 {
-  transition-delay: 0.38s;
+  transition-delay: 0.30s;
+}
+
+.hero-cinematic.hero-revealed .hero-k5 {
+  transition-delay: 0.42s;
+}
+
+.hero-cinematic.hero-revealed .hero-k6 {
+  transition-delay: 0.50s;
+}
+
+.hero-cinematic.hero-revealed .hero-k7 {
+  transition-delay: 0.60s;
 }
 
 .hero-cinematic.hero-revealed .hero-spatial-lead {
-  transition-delay: 0.52s;
+  transition-delay: 0.74s;
 }
 
 .hero-cinematic.hero-revealed .hero-spatial-actions {
-  transition-delay: 0.64s;
+  transition-delay: 0.86s;
 }
 
 .hero-cinematic.hero-revealed .hero-spatial-d5 {
-  transition-delay: 0.78s;
+  transition-delay: 0.98s;
 }
 
 /* Luminous Champagne Gradient with Light-Sweep Shimmer */
@@ -773,7 +785,7 @@ p, li, span, a, label {
 }
 
 .hero-cinematic.hero-revealed .text-glow-champagne {
-  animation: champagneLightSweep 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.45s 1 normal forwards;
+  animation: champagneLightSweep 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.64s 1 normal forwards;
 }
 
 @keyframes champagneLightSweep {
@@ -786,8 +798,13 @@ p, li, span, a, label {
 }
 
 .hero-title-group {
-  max-width: 900px;
+  max-width: 1120px;
   margin-bottom: 1.75rem;
+}
+
+.hero-title-group h1.display-hero {
+  font-size: clamp(2.5rem, 5.2vw, 4.85rem);
+  line-height: 1.04;
 }
 
 .hero-title-group h1 {
@@ -3079,13 +3096,6 @@ details[open] .faq-accordion-plus {
     );
   }
 
-  .hero-video-toggle {
-    top: calc(var(--mobile-header-height) + 0.85rem);
-    right: 1rem;
-    font-size: 0.68rem;
-    padding: 0.35rem 0.75rem;
-  }
-
   .hero-inner-container {
     padding-bottom: calc(var(--mobile-header-height) + 1.25rem);
     padding-inline: 1.25rem;
@@ -3101,8 +3111,8 @@ details[open] .faq-accordion-plus {
   }
 
   .hero-title-group h1.display-hero {
-    font-size: clamp(2.35rem, 8.5vw, 3.25rem);
-    line-height: 1.02;
+    font-size: clamp(2.15rem, 7.5vw, 2.85rem);
+    line-height: 1.05;
   }
 
   .hero-lead-text {

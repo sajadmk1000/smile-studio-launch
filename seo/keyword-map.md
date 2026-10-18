@@ -2,7 +2,7 @@
 
 | Page | Primary intent | Secondary intent | H1 |
 |---|---|---|---|
-| / | dental clinic in South Koduvally | dentist Koduvally | Care, down to the details. |
+| / | dental clinic in South Koduvally | dentist Koduvally | Precision in every detail. Confidence in every smile. |
 | /treatments | dental treatments Koduvally | service overview | Find your starting point. |
 | /treatments/smile-designing | smile designing Koduvally | smile planning | A smile begins with a conversation. |
 | /treatments/orthodontics | orthodontics Koduvally | teeth alignment | Alignment, considered carefully. |
