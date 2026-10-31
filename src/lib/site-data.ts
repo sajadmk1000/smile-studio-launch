@@ -24,7 +24,7 @@ export const media = {
   heroVideo: "/clinic/hero.mp4",
   heroVideoMobile: "/clinic/hero-mobile.mp4",
   heroPoster: "/clinic/hero-poster.webp",
-  heroPosterMobile: "/clinic/hero-poster.webp",
+  heroPosterMobile: "/clinic/hero-poster-mobile.webp",
   exterior: "/clinic/exterior.webp",
   exteriorMobile: "/clinic/exterior-mobile.webp",
   signage: "/clinic/signage.webp",

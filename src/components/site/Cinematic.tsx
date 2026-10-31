@@ -55,7 +55,7 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
     // Fallback timer: ensure text reveals within 3.4s even on slow network
     const fallbackTimer = setTimeout(() => {
       triggerReveal();
-    }, 3400);
+    }, isMobile ? 500 : 2500);
 
     if (!video) {
       return () => {
@@ -86,7 +86,7 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
         // Let the establishing shot move toward the clinic room unobstructed for 2.6s
         revealTimer = setTimeout(() => {
           triggerReveal();
-        }, 2600);
+        }, isMobile ? 350 : 1600);
       }
     };
 
@@ -194,8 +194,8 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
   }, [isMobile]);
 
   // Use master 16:9 uncropped video with mirrored ambient backdrop
-  const activeVideoSrc = media.heroVideo;
-  const activePosterSrc = media.heroPoster;
+  const activeVideoSrc = isMobile ? media.heroVideoMobile : media.heroVideo;
+  const activePosterSrc = isMobile ? media.heroPosterMobile : media.heroPoster;
 
   return (
     <section
@@ -203,15 +203,7 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
       aria-label="Welcome to Dr. Ameen's Smile Studio"
     >
       <div className="hero-video-wrapper">
-        {/* Mobile Ambient Blurred Backdrop Poster */}
-        <img
-          src={activePosterSrc}
-          alt=""
-          className="hero-poster-backdrop"
-          aria-hidden="true"
-        />
-
-        {/* Ambient Canvas (Generates zero-lag, ultra-vibrant real-time ambient lighting) */}
+        {/* Ambient Canvas (Hidden via CSS on mobile, active on desktop) */}
         <canvas
           ref={canvasRef}
           width={96}
@@ -220,55 +212,36 @@ export function CinematicHero({ onOpenBooking }: CinematicHeroProps) {
           aria-hidden="true"
         />
 
-        {/* Foreground Poster Frame */}
-        <img
-          src={activePosterSrc}
-          alt="Exterior and consultation suite of Dr. Ameen's Smile Studio"
-          className="hero-poster"
-          loading="eager"
-          fetchPriority="high"
-        />
+        {/* Foreground Poster Frame: natively responsive <picture>, matches frame 0 */}
+        <picture className="hero-poster">
+          <source media="(max-width: 768px)" srcSet={media.heroPosterMobile} />
+          <img
+            src={media.heroPoster}
+            alt="Dr. Ameen's Smile Studio Sanctuary"
+            className="hero-poster-img"
+            loading="eager"
+            fetchPriority="high"
+          />
+        </picture>
 
-        {/* Cinematic Walkthrough Video: Foreground + Mobile Ambient Blurred Backdrop */}
+        {/* Cinematic Walkthrough Video: natively responsive source elements */}
         {!prefersReducedMotion && (
-          <>
-            {/* Ambient Blurred Backdrop Mirror (Mobile only, zero crop companion) */}
-            <video
-              ref={backdropVideoRef}
-              className="hero-video-backdrop"
-              muted
-              playsInline
-              loop
-              autoPlay
-              preload="auto"
-              poster={activePosterSrc}
-              aria-hidden="true"
-              tabIndex={-1}
-            >
-              <source src={activeVideoSrc} type="video/mp4" />
-            </video>
-
-            {/* Main Foreground Video (16:9 uncropped on mobile, full bleed on desktop) */}
-            <video
-              ref={videoRef}
-              className="hero-video"
-              muted
-              playsInline
-              loop
-              autoPlay
-              preload="auto"
-              poster={activePosterSrc}
-              aria-hidden="true"
-            >
-              <source src={activeVideoSrc} type="video/mp4" />
-            </video>
-          </>
+          <video
+            ref={videoRef}
+            className="hero-video"
+            muted
+            playsInline
+            loop
+            autoPlay
+            preload="auto"
+            aria-hidden="true"
+          >
+            <source media="(max-width: 768px)" src={media.heroVideoMobile} type="video/mp4" />
+            <source src={media.heroVideo} type="video/mp4" />
+          </video>
         )}
 
-        {/* Mobile Edge Blending Vignette Overlay */}
-        <div className="hero-ambient-vignette" />
-
-        {/* Ambient Architectural Vignette & Text Scrim */}
+        {/* Architectural Vignette & Seamless Edge Blending Scrim */}
         <div className="hero-scrim" />
       </div>
 
